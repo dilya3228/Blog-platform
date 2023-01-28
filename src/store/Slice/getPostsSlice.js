@@ -34,6 +34,9 @@ const getPostSlice = createSlice({
     SetPage: function (state, { payload }) {
       state.actuallyPage = payload
     },
+    createArticle(state) {
+      state.isCreatePost = false
+    },
   },
   extraReducers: {
     [fetchPosts.pending]: (state) => {
@@ -77,6 +80,6 @@ const getPostSlice = createSlice({
   },
 })
 
-export const { SetOffset, SetPage } = getPostSlice.actions
+export const { SetOffset, SetPage, createArticle } = getPostSlice.actions
 
 export default getPostSlice.reducer

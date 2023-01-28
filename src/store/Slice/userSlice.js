@@ -22,7 +22,7 @@ const userSlice = createSlice({
       bio: '',
       image: '',
     },
-    error: null,
+    error: '',
     status: null,
     isReg: false,
     isIn: false,
@@ -31,7 +31,6 @@ const userSlice = createSlice({
   reducers: {
     logout(state) {
       localStorage.removeItem('token')
-      localStorage.removeItem('root')
       state.user = {
         username: '',
         email: '',
@@ -40,6 +39,10 @@ const userSlice = createSlice({
         bio: '',
       }
       state.isIn = false
+      state.isReg = false
+    },
+    editProfile(state) {
+      state.isEdit = false
     },
   },
   extraReducers: {
@@ -92,6 +95,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { logout } = userSlice.actions
+export const { logout, editProfile } = userSlice.actions
 
 export default userSlice.reducer
