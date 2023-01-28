@@ -1,0 +1,17 @@
+@font-face {
+  font-family: 'interUi';
+  src: url('../../fonts/InterUI.ttf');
+}
+body {
+  font-family: 'interUi';
+  margin: 0;
+  padding: 0;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  background: #ebeef3;
+  width: auto;
+  min-height: 977px;
+  height: auto;
+}

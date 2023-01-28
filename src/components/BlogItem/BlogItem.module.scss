@@ -1,0 +1,130 @@
+.item {
+  display: flex;
+  margin-top: 26px;
+  padding: 15px;
+  max-width: 941px;
+  min-height: 110px;
+  max-height: 140px;
+  background: #ffffff;
+  border-radius: 5px;
+  list-style: none;
+  filter: drop-shadow(0px 4px 12px rgba(0, 0, 0, 0.15));
+
+  .postInfo {
+    display: flex;
+    align-items: flex-start;
+    // width: 701px;
+  }
+
+  .title {
+    width: 682px;
+    display: grid;
+    // flex-wrap: wrap;
+    // align-items: center;
+  }
+
+  .header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: max-content;
+
+    .headerTitle {
+      color: #1890ff;
+      margin: 0px 0px 4px 0px;
+      font-size: 20px;
+      // max-width: 200px;
+      // max-height: 28px;
+    }
+
+    .like {
+      background-color: white;
+      border: none;
+      margin: 0px 0px 2px 13px;
+      height: 15px;
+      width: 16px;
+      border-radius: 0px;
+      background-image: url(../../img/Vector.png);
+      cursor: pointer;
+    }
+
+    .likeCounter {
+      margin: 2px 0px 0px 5px;
+      height: 22px;
+      width: 13px;
+    }
+  }
+
+  .info {
+    // display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    width: max-content;
+    grid-column-gap: 10px;
+
+    .tag {
+      padding: 2px 4px;
+      border: 1px solid rgba(0, 0, 0, 0.5);
+      border-radius: 2px;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 15px;
+      color: rgba(0, 0, 0, 0.5);
+      margin-bottom: 7px;
+      max-height: 17px;
+      width: max-content;
+      overflow-wrap: break-word;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .text {
+      // display: flex;
+      // grid-row-start: 2;
+      // grid-row-end: 5;
+      // grid-column-start: 2;
+      // grid-column-end: 4;
+      width: 682px;
+      font-size: 12px;
+      line-height: 22px;
+      color: rgba(0, 0, 0, 0.75);
+      overflow-wrap: break-word;
+    }
+  }
+
+  .none {
+    text-decoration: none;
+  }
+
+  .userInfo {
+    display: flex;
+    // margin-left: 125px;
+
+    .userContainer {
+      width: max-content;
+      margin-right: 12px;
+    }
+
+    .name {
+      display: flex;
+      justify-content: flex-end;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 28px;
+    }
+
+    .date {
+      color: gray;
+      font-size: 12px;
+      line-height: 22px;
+    }
+
+    .avatar {
+      margin-right: 12px;
+      border-radius: 23px;
+      height: 46px;
+      width: 48px;
+    }
+  }
+}
