@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getListPost } from '../../service/getPostsService'
 import { getSlug } from '../../service/getPostsSlug'
 import { postCreatePost } from '../../service/postCreatePost'
+import { deletePost } from '../../service/deletePost'
 
 export const fetchPosts = createAsyncThunk('/articles/fetchPosts', async (offset, { rejectWithValue }) => {
   return await getListPost(offset, { rejectWithValue })
@@ -13,6 +14,10 @@ export const fetchSlug = createAsyncThunk('/articles/fetchSlug', async ({ reject
 
 export const createPost = createAsyncThunk('/articles/createPost', async (userRegData, { rejectWithValue }) => {
   return await postCreatePost(userRegData, { rejectWithValue })
+})
+
+export const delPost = createAsyncThunk('/articles/delPost', async (slug) => {
+  return await deletePost(slug)
 })
 
 const getPostSlice = createSlice({
@@ -74,6 +79,18 @@ const getPostSlice = createSlice({
       state.isCreatePost = true
     },
     [createPost.rejected]: (state, action) => {
+      state.status = 'rejected'
+      state.error = action.payload
+    },
+    [delPost.pending]: (state) => {
+      state.status = 'loading'
+      state.error = null
+    },
+    [delPost.fulfilled]: (state, action) => {
+      state.status = 'resolve'
+      // state.createPost = action.payload
+    },
+    [delPost.rejected]: (state, action) => {
       state.status = 'rejected'
       state.error = action.payload
     },

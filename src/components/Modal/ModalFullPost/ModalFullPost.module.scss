@@ -139,7 +139,7 @@
     .Ebtn {
         padding: 6px 15px;
         width: 118px;
-        height: 40px;
+        height: 26px;
         color: #52C41A;
         border: 1px solid #52C41A;
         border-radius: 4px;
@@ -147,11 +147,13 @@
         font-size: 16px;
         line-height: 24px;
         cursor: pointer;
+        text-decoration: none;
     }
   }
 
   .fullInfo {
     display: flex;
+    word-break: break-all;
     margin-top: 50px;
     max-width: 880px;
   }

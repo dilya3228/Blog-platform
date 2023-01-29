@@ -10,10 +10,10 @@ const ModalCreatePost = () => {
   const navigate = useNavigate()
   const { isCreatePost } = useSelector((state) => state.posts)
 
-  const [unputs, setInputs] = useState([{ service: '' }])
+  const [unputs, setInputs] = useState([''])
 
   const handelAdd = () => {
-    setInputs([...unputs, { service: '' }])
+    setInputs([...unputs, ''])
   }
 
   const handelDel = (index) => {
@@ -23,9 +23,9 @@ const ModalCreatePost = () => {
   }
 
   const handleChange = (e, index) => {
-    const { name, value } = e.target
+    const { value } = e.target
     const list = [...unputs]
-    list[index][name] = value
+    list[index] = value
     setInputs(list)
   }
 
@@ -40,12 +40,13 @@ const ModalCreatePost = () => {
   })
 
   const onSubmit = (data) => {
+    console.log(data.tag)
     const stateCreatePost = {
       article: {
         title: data.title,
         description: data.description,
         body: data.body,
-        tagList: data.tag,
+        tagList: unputs.filter((tag) => tag),
       },
     }
     dispatch(createPost(stateCreatePost))
@@ -112,11 +113,12 @@ const ModalCreatePost = () => {
                     name="service"
                     id="Tag"
                     type="text"
+                    value={singlInput}
                     className={classes.inputTag}
                     placeholder="Tag"
-                    {...register('tag', {
-                      pattern: { value: singlInput.service },
-                    })}
+                    // {...register('tag', {
+                    //   pattern: { value: singlInput.service },
+                    // })}
                     onChange={(e) => handleChange(e, index)}
                   />
                   {unputs.length > 1 && (

@@ -8,6 +8,7 @@ import ModalCreateAccount from '../Modal/ModalCreateAccount/ModalCreateAccount'
 import ModalEditProfile from '../Modal/ModalEditProfile/ModalEditProfile'
 import ModalLogin from '../Modal/ModalLogin/ModalLogin'
 import ModalCreatePost from '../Modal/ModalCreatePost/ModalCreatePost'
+import ModalEditPost from '../Modal/ModalEditPost/ModalEditPost'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="sign-in" element={<ModalLogin />} />
           <Route path="profile" element={<ModalEditProfile />} />
           <Route path="new-article" element={<ModalCreatePost />} />
+          <Route path="edit" element={<ModalEditPost />} />
         </Route>
       </Routes>
     </div>

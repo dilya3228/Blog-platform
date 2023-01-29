@@ -50,17 +50,12 @@ const BlogItem = (props) => {
                 <div className={classes.tag}>{el.substr(0, 10)}</div>
               </>
             ))} */}
-            {tagList.map(
-              (el) => (
-                // el.includes(undefined) ? null : (
-                <>
-                  <div className={classes.tag} key={el.id}>
-                    {el.substr(0, 10)}
-                  </div>
-                </>
-              )
-              // )
-            )}
+            {tagList &&
+              tagList.map((el) => (
+                <div className={classes.tag} key={el.id}>
+                  {el.substr(0, 10)}
+                </div>
+              ))}
             {/* <div className={classes.tag}>{tagList}</div> */}
           </div>
           <div className={classes.text}>{hiddenText}</div>
