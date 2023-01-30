@@ -9,11 +9,11 @@ import ModalEditProfile from '../Modal/ModalEditProfile/ModalEditProfile'
 import ModalLogin from '../Modal/ModalLogin/ModalLogin'
 import ModalCreatePost from '../Modal/ModalCreatePost/ModalCreatePost'
 import ModalEditPost from '../Modal/ModalEditPost/ModalEditPost'
+import PrivateRoute from './PrivatRoute'
 
 const App = () => {
   return (
     <div className={classes.container}>
-      {/* <Header /> */}
       <Routes>
         <Route path="/" element={<Header />}>
           <Route index element={<BlogList />} />
@@ -21,7 +21,14 @@ const App = () => {
           <Route path="sign-up" element={<ModalCreateAccount />} />
           <Route path="sign-in" element={<ModalLogin />} />
           <Route path="profile" element={<ModalEditProfile />} />
-          <Route path="new-article" element={<ModalCreatePost />} />
+          <Route
+            path="new-article"
+            element={
+              <PrivateRoute>
+                <ModalCreatePost />
+              </PrivateRoute>
+            }
+          />
           <Route path="edit" element={<ModalEditPost />} />
         </Route>
       </Routes>

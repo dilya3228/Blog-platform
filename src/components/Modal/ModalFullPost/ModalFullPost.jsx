@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
-import instance from '../../../service/instance'
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
 import { format } from 'date-fns'
-import { fetchSlug, delPost } from '../../../store/Slice/getPostsSlice'
-import { deletePost } from '../../../service/deletePost'
+import { fetchSlug, delPost, putEdittt } from '../../../store/Slice/getPostsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -23,7 +21,7 @@ const ModalFullPost = () => {
 
   useEffect(() => {
     dispatch(fetchSlug(slug))
-  }, [dispatch])
+  }, [dispatch, slug])
 
   const formatData = (data) => {
     if (!data) return null
@@ -38,7 +36,7 @@ const ModalFullPost = () => {
   const cancel = (e) => {
     message.error('Отмена удаления поста')
   }
-
+  // console.log(.trim().slice(0, 1700))
   return (
     <div className={classes.item}>
       <div className={classes.postInfo}>
@@ -58,7 +56,7 @@ const ModalFullPost = () => {
           </div>
           <div className={classes.text}>{hiddenText}</div>
           <div className={classes.fullInfo}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{body.trim().slice(0, 1700)}</ReactMarkdown>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
           </div>
         </div>
       </div>
@@ -82,7 +80,21 @@ const ModalFullPost = () => {
                   </button>
                 </Popconfirm>
 
-                <Link to={`/edit`} className={classes.Ebtn}>
+                <Link
+                  to={`/edit`}
+                  className={classes.Ebtn}
+                  state={{
+                    key: slug,
+                    author: author,
+                    title: title,
+                    description: description,
+                    createdAt: createdAt,
+                    favoritesCount: favoritesCount,
+                    tagList: tagList,
+                    body: body,
+                  }}
+                  onClick={() => dispatch(putEdittt())}
+                >
                   Edit
                 </Link>
               </>

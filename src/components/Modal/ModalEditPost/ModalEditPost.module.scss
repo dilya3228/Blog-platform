@@ -69,11 +69,13 @@
   }
   
   .wrapTag {
-    display: grid;
-    grid-template-columns: 300px 120px 136px;
-    grid-template-rows: 40px 40px 40px;
-    grid-auto-flow: column;
-    gap: 10px 18px;
+    display: flex;
+    flex-direction: column;
+    // display: grid;
+    // grid-template-columns: 300px 120px 136px;
+    // grid-template-rows: 40px 40px 40px;
+    // grid-auto-flow: column;
+    // gap: 10px 18px;
   }
   
   .labelTitleTag {
@@ -85,7 +87,7 @@
     margin-bottom: 2px;
   }
   
-  .wrapperBtn {
+  .wrapperBtnDel {
     width: 118px;
     height: 40px;
     color: #f5222d;
@@ -97,8 +99,7 @@
     cursor: pointer;
   }
   
-  .wrapperBtn:last-child {
-    margin-top: 100px;
+  .wrapperBtnAdd {
     width: 136px;
     height: 40px;
     color: #1890ff;

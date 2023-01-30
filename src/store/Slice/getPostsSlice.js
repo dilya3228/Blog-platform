@@ -3,6 +3,7 @@ import { getListPost } from '../../service/getPostsService'
 import { getSlug } from '../../service/getPostsSlug'
 import { postCreatePost } from '../../service/postCreatePost'
 import { deletePost } from '../../service/deletePost'
+import { putEditPost } from '../../service/putEditPost'
 
 export const fetchPosts = createAsyncThunk('/articles/fetchPosts', async (offset, { rejectWithValue }) => {
   return await getListPost(offset, { rejectWithValue })
@@ -20,6 +21,10 @@ export const delPost = createAsyncThunk('/articles/delPost', async (slug) => {
   return await deletePost(slug)
 })
 
+export const putEdit = createAsyncThunk('/articles/delPost', async (slug, userRegData) => {
+  return await putEditPost(slug, userRegData)
+})
+
 const getPostSlice = createSlice({
   name: 'posts',
   initialState: {
@@ -31,6 +36,7 @@ const getPostSlice = createSlice({
     actuallyPage: 1,
     articlesCount: 0,
     isCreatePost: false,
+    isEditPost: false,
   },
   reducers: {
     SetOffset: function (state, { payload }) {
@@ -41,6 +47,9 @@ const getPostSlice = createSlice({
     },
     createArticle(state) {
       state.isCreatePost = false
+    },
+    putEdittt(state) {
+      state.isEditPost = false
     },
   },
   extraReducers: {
@@ -94,9 +103,23 @@ const getPostSlice = createSlice({
       state.status = 'rejected'
       state.error = action.payload
     },
+    [putEdit.pending]: (state) => {
+      state.status = 'loading'
+      state.error = null
+      state.isEditPost = false
+    },
+    [putEdit.fulfilled]: (state, action) => {
+      state.status = 'resolve'
+      state.isEditPost = true
+      // state.createPost = action.payload
+    },
+    [putEdit.rejected]: (state, action) => {
+      state.status = 'rejected'
+      state.error = action.payload
+    },
   },
 })
 
-export const { SetOffset, SetPage, createArticle } = getPostSlice.actions
+export const { SetOffset, SetPage, createArticle, putEdittt } = getPostSlice.actions
 
 export default getPostSlice.reducer

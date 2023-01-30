@@ -7,7 +7,7 @@ export const postLogUser = createAsyncThunk('/user/postLogUser', async (userRegD
   return await postSignIn(userRegData, { rejectWithValue })
 })
 
-export const putEdit = createAsyncThunk('/user/putEdit', async (userRegData, { rejectWithValue }) => {
+export const putEditP = createAsyncThunk('/user/putEditP', async (userRegData, { rejectWithValue }) => {
   return await putEditProfile(userRegData, { rejectWithValue })
 })
 
@@ -31,6 +31,7 @@ const userSlice = createSlice({
   reducers: {
     logout(state) {
       localStorage.removeItem('token')
+      localStorage.removeItem('root')
       state.user = {
         username: '',
         email: '',
@@ -47,13 +48,13 @@ const userSlice = createSlice({
   },
   extraReducers: {
     [postSignUp.pending]: (state, action) => {
-      state.status = true
+      state.status = 'pending'
       state.error = null
       state.isReg = false
       state.isIn = false
     },
     [postSignUp.fulfilled]: (state, action) => {
-      state.status = false
+      state.status = 'fulfilled'
       state.isReg = true
       state.isIn = true
       state.user = action.payload.user
@@ -78,17 +79,17 @@ const userSlice = createSlice({
       state.status = 'rejected'
       state.error = action.payload
     },
-    [putEdit.pending]: (state) => {
+    [putEditP.pending]: (state) => {
       state.status = true
       state.error = ''
       state.isEdit = false
     },
-    [putEdit.fulfilled]: (state, action) => {
+    [putEditP.fulfilled]: (state, action) => {
       state.status = false
       state.user = action.payload.user
       state.isEdit = true
     },
-    [putEdit.rejected]: (state, action) => {
+    [putEditP.rejected]: (state, action) => {
       state.status = 'rejected'
       state.error = action.payload
     },

@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import classes from './ModalCreateAccount.module.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { postSignUp } from '../../../service/postSignUp'
-
+import classes from './ModalCreateAccount.module.scss'
 const ModalCreateAccount = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -117,7 +116,8 @@ const ModalCreateAccount = () => {
             </label>
             <div className={classes.error}>{errors?.chekk && <p>{errors?.chekk?.message || 'Error!'}</p>}</div>
           </div>
-          <div className={classes.error}>{error && <p>{error.message || 'A user with the same usernameor email address exists!'}</p>}</div>
+          {status === 'rejected' ? <div className={classes.error}>{error}</div> : ''}
+          {/* <div className={classes.error}>{error && <p>{error.message || 'A user with the same username or email address exists!'}</p>}</div> */}
           <button type="submit" disabled={!isValid} className={classes.createBtn}>
             Create
           </button>

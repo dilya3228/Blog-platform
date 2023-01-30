@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { putEdit } from '../../../store/Slice/userSlice'
+import { putEditP } from '../../../store/Slice/userSlice'
 import classes from './ModalEditProfile.module.scss'
 
 const ModalEditProfile = () => {
@@ -29,7 +29,7 @@ const ModalEditProfile = () => {
         image: data.image,
       },
     }
-    dispatch(putEdit(stateUser))
+    dispatch(putEditP(stateUser))
     reset()
   }
 

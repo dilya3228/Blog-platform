@@ -28,10 +28,11 @@ const BlogItem = (props) => {
                 // key={slug}
                 to={`/articles/${slug}`}
                 state={{
-                  title: title,
+                  key: slug,
                   author: author,
-                  createdAt: createdAt,
+                  title: title,
                   description: description,
+                  createdAt: createdAt,
                   favoritesCount: favoritesCount,
                   tagList: tagList,
                   body: body,

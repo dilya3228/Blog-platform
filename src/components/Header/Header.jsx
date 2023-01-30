@@ -8,7 +8,7 @@ import avatar from '../../img/Rectangle1.png'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { isIn } = useSelector((state) => state.user)
+  const { isIn, isReg } = useSelector((state) => state.user)
   const { username, image } = useSelector((state) => state.user.user)
 
   return (
@@ -18,7 +18,7 @@ const Header = () => {
           <h1>Realworld Blog</h1>
         </Link>
         <div className={classes.containerBtn}>
-          {isIn ? (
+          {isIn || isReg ? (
             <div className={classes.wrapper}>
               <Link to="new-article" className={classes.createArt} onClick={() => dispatch(createArticle())}>
                 Create article

@@ -1,39 +1,141 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { putEdit } from '../../../store/Slice/getPostsSlice'
+import { useDispatch, useSelector } from 'react-redux'
 import classes from './ModalEditPost.module.scss'
 
 const ModalEditPost = () => {
-  // const location = useLocation()
-  // const { title, description, tagList, body } = location.state
+  const dispatch = useDispatch()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const { title, description, tagList, body, key } = location.state
+  const { isEditPost } = useSelector((state) => state.posts)
+
+  const [unputs, setInputs] = useState([tagList])
+
+  const handelAdd = () => {
+    setInputs([...unputs, ''])
+  }
+
+  const handelDel = (index) => {
+    const list = [...unputs]
+    list.splice(index, 1)
+    setInputs(list)
+  }
+
+  const handleChange = (e, index) => {
+    const { value } = e.target
+    const list = [...unputs]
+    list[index] = value
+    setInputs(list)
+  }
+
+  const {
+    register,
+    watch,
+    formState: { errors, isValid },
+    handleSubmit,
+    reset,
+  } = useForm({
+    mode: 'onBlur',
+  })
+  const onSubmit = (data) => {
+    const stateEditPost = {
+      article: {
+        title: data.title,
+        description: data.description,
+        body: data.body,
+      },
+    }
+    dispatch(putEdit(key, stateEditPost))
+    reset()
+  }
+
+  useEffect(() => {
+    if (isEditPost) {
+      navigate('/', { replace: true })
+    }
+    reset()
+  }, [isEditPost])
+
   return (
     <div className={classes.title}>
       <div className={classes.createTitle}>
         <h2 className={classes.titleh2}>Edit article</h2>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <span className={classes.labelTitle}>title</span>
           <label htmlFor="Title" className={classes.label}>
-            <input id="Title" className={classes.input} placeholder="Title" />
+            <input
+              defaultValue={title}
+              id="Title"
+              className={classes.input}
+              {...register('title', {
+                required: false,
+                maxLength: { value: 100, message: 'Максимум 100 символов' },
+                minLength: { value: 3, message: 'Минимум 3 символа' },
+              })}
+            />
           </label>
           <span className={classes.labelTitle}>description</span>
           <label htmlFor="Short description" className={classes.label}>
-            <input id="Short description" className={classes.input} placeholder="Short description" />
+            <input
+              id="Short description"
+              defaultValue={description}
+              {...register('description', {
+                required: false,
+                maxLength: { value: 100, message: 'Максимум 100 символов' },
+                minLength: { value: 3, message: 'Минимум 3 символа' },
+              })}
+              className={classes.input}
+            />
           </label>
           <span className={classes.labelTitle}>body</span>
-          <input id="Text" type="text" className={classes.inputText} placeholder="Text" />
+          <input
+            id="Text"
+            defaultValue={body}
+            {...register('body', {
+              required: false,
+              maxLength: { value: 3000, message: 'Максимум 3000 символов' },
+              minLength: { value: 3, message: 'Минимум 3 символа' },
+            })}
+            type="text"
+            className={classes.inputText}
+          />
           <span className={classes.labelTitleTag}>Tags</span>
           <label htmlFor="Tags" className={classes.wrapTag}>
-            <input id="Tags" className={classes.inputTag} placeholder="Tag" />
-            <input id="Tags" className={classes.inputTag} placeholder="Tag" />
-            <input id="Tags" className={classes.inputTag} placeholder="Tag" />
-            <button className={classes.wrapperBtn}>Delete</button>
-            <button className={classes.wrapperBtn}>Delete</button>
-            <button className={classes.wrapperBtn}>Delete</button>
-            <button className={classes.wrapperBtn}>Add tag</button>
+            {unputs.map((singlInput, index) => (
+              <>
+                <div key={index}>
+                  <input
+                    name="service"
+                    id="Tag"
+                    type="text"
+                    defaultValue={singlInput}
+                    // value={singlInput}
+                    className={classes.inputTag}
+                    placeholder="Tag"
+                    onChange={(e) => handleChange(e, index)}
+                  />
+                  {unputs.length > 1 && (
+                    <button onClick={() => handelDel(index)} className={classes.wrapperBtnDel}>
+                      Delete
+                    </button>
+                  )}
+
+                  {unputs.length - 1 === index && unputs.length < 4 && (
+                    <button onClick={handelAdd} className={classes.wrapperBtnAdd}>
+                      Add tag
+                    </button>
+                  )}
+                </div>
+              </>
+            ))}
           </label>
+          <button type="submit" className={classes.sendBtn}>
+            Send
+          </button>
         </form>
-        <button type="submit" className={classes.sendBtn}>
-          Send
-        </button>
       </div>
     </div>
   )

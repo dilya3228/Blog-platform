@@ -5,11 +5,11 @@ import { useForm } from 'react-hook-form'
 import { postLogUser } from '../../../store/Slice/userSlice'
 import classes from './ModalLogin.module.scss'
 
-const ModalLogin = () => {
+const ModalLogin = ({ children }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const { isIn } = useSelector((state) => state.user)
+  const { isIn, isReg } = useSelector((state) => state.user)
 
   const {
     register,

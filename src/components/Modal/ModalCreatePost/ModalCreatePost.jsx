@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate, useLocation } from 'react-router-dom'
 import { createPost } from '../../../store/Slice/getPostsSlice'
 import classes from './ModalCreatePost.module.scss'
 
 const ModalCreatePost = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { isCreatePost } = useSelector((state) => state.posts)
+  const { isIn, isReg } = useSelector((state) => state.user)
 
   const [unputs, setInputs] = useState([''])
 
@@ -40,7 +42,6 @@ const ModalCreatePost = () => {
   })
 
   const onSubmit = (data) => {
-    console.log(data.tag)
     const stateCreatePost = {
       article: {
         title: data.title,
@@ -55,7 +56,7 @@ const ModalCreatePost = () => {
 
   useEffect(() => {
     if (isCreatePost) {
-      navigate('/', { replace: true })
+      navigate(`/`, { replace: true })
     }
     reset()
   }, [isCreatePost])
