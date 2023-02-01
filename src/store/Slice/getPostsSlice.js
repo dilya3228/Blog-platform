@@ -35,6 +35,21 @@ export const deleteLikePost = createAsyncThunk('/articles/deleteLikePost', async
   return await deleteLike(slug)
 })
 
+export const fetchLikeArticle = createAsyncThunk('articles/fetchLikeArticle', async (slug, { rejectWithValue }) => {
+  const token = localStorage.getItem('token')
+  const response = await fetch(`https://blog.kata.academy/api/articles/${slug[1]}/favorite`, {
+    method: !slug[0] ? 'POST' : 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  if (!response.ok) {
+    return rejectWithValue('Лайк не поставлен')
+  }
+  return await response.json()
+})
+
 const getPostSlice = createSlice({
   name: 'posts',
   initialState: {
@@ -70,6 +85,22 @@ const getPostSlice = createSlice({
     },
   },
   extraReducers: {
+    [fetchLikeArticle.pending]: (state) => {
+      state.status = 'loading'
+      state.error = null
+    },
+    [fetchLikeArticle.fulfilled]: (state, { payload }) => {
+      state.status = 'resolve'
+      // state.likeCount = false
+      state.posts.articles.map((article) => {
+        if (article.slug === payload.article.slug) article = payload.article
+        return article
+      })
+    },
+    [fetchLikeArticle.rejected]: (state, action) => {
+      state.status = 'rejected'
+      state.error = action.payload
+    },
     [fetchPosts.pending]: (state) => {
       state.status = 'loading'
       state.error = null

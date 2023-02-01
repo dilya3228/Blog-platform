@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addLike, delLike, postLikePost, deleteLikePost } from '../../store/Slice/getPostsSlice'
-// import { apiService } from '../../service/postLike'
+import { addLike, delLike, postLikePost, deleteLikePost, fetchLikeArticle } from '../../store/Slice/getPostsSlice'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { Button } from 'antd'
 import classes from './BlogItem.module.scss'
@@ -11,29 +10,43 @@ import classes from './BlogItem.module.scss'
 const BlogItem = (props) => {
   const dispatch = useDispatch()
   const { author, title, createdAt, description, favoritesCount, tagList, body, slug, favorited } = props
-  const { like } = useSelector((state) => state.posts)
+  const {
+    posts: { articles, articlesCount },
+  } = useSelector((state) => state.posts)
 
   const { isIn, isReg } = useSelector((state) => state.user)
-  const [likeCount, setLikeCount] = useState(favoritesCount)
-
-  console.log(useSelector((state) => state.posts))
+  const [like, setLike] = useState(favorited)
+  const [count, setCount] = useState(favoritesCount)
 
   const formatData = (data) => {
     if (!data) return null
     return format(new Date(data), 'MMMM d, yyyy')
   }
 
-  const handleLike = () => {
-    if (!like) {
-      dispatch(postLikePost(slug, favorited))
-      setLikeCount(likeCount + 1)
-      dispatch(addLike(like))
-    } else {
-      dispatch(deleteLikePost(slug))
-      setLikeCount(likeCount - 1)
-      dispatch(delLike(like))
+  useEffect(() => {
+    if (favorited || !favorited) {
+      setLike(favorited)
     }
+    setCount(favoritesCount)
+  }, [slug, favorited, favoritesCount])
+
+  const handleLike = () => {
+    setLike(!like)
+    setCount(like ? count - 1 : count + 1)
+    dispatch(fetchLikeArticle([like, slug]))
   }
+
+  // const handleLike = () => {
+  //   if (!like) {
+  //     dispatch(postLikePost(slug, favorited))
+  //     setLikeCount(likeCount + 1)
+  //     dispatch(addLike(like))
+  //   } else {
+  //     dispatch(deleteLikePost(slug))
+  //     setLikeCount(likeCount - 1)
+  //     dispatch(delLike(like))
+  //   }
+  // }
 
   const hiddenTitle = title && title.length > 25 ? title.slice(0, title.indexOf('', 25)) + '...' : title
 
@@ -63,9 +76,16 @@ const BlogItem = (props) => {
             </div>
             {/* <button className={classes.like} onClick={handleLike}></button>
             <div className={classes.likeCounter}>{likeCount}</div> */}
-            <Button className={classes.like} onClick={handleLike}>
+            <Button
+              className={classes.like}
+              onClick={() => {
+                setLike(!like)
+                setCount(like ? count - 1 : count + 1)
+                dispatch(fetchLikeArticle([like, slug]))
+              }}
+            >
               {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}
-              {likeCount}
+              {count}
             </Button>
             {/* <div className={classes.likeCounter}>{likeCount}</div> */}
           </div>
