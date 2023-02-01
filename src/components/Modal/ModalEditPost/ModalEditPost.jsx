@@ -72,8 +72,8 @@ const ModalEditPost = () => {
               className={classes.input}
               {...register('title', {
                 required: false,
-                maxLength: { value: 100, message: 'Максимум 100 символов' },
-                minLength: { value: 3, message: 'Минимум 3 символа' },
+                minLength: { value: 3, message: 'Минимум 3 символов' },
+                maxLength: { value: 50, message: 'Максимум 50 символов' },
               })}
             />
           </label>
@@ -84,8 +84,8 @@ const ModalEditPost = () => {
               defaultValue={description}
               {...register('description', {
                 required: false,
-                maxLength: { value: 100, message: 'Максимум 100 символов' },
-                minLength: { value: 3, message: 'Минимум 3 символа' },
+                minLength: { value: 3, message: 'Минимум 3 символов' },
+                maxLength: { value: 80, message: 'Максимум 80 символов' },
               })}
               className={classes.input}
             />
@@ -96,8 +96,8 @@ const ModalEditPost = () => {
             defaultValue={body}
             {...register('body', {
               required: false,
-              maxLength: { value: 3000, message: 'Максимум 3000 символов' },
-              minLength: { value: 3, message: 'Минимум 3 символа' },
+              minLength: { value: 3, message: 'Минимум 3 символов' },
+              maxLength: { value: 1000, message: 'Максимум 50 символов' },
             })}
             type="text"
             className={classes.inputText}

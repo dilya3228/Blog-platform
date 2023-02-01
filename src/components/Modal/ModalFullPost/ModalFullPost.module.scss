@@ -14,19 +14,15 @@
   .postInfo {
     display: flex;
     align-items: flex-start;
-    // width: 701px;
   }
 
   .title {
     width: 682px;
     display: grid;
-    // width: 682px;
-    // display: flex;
-    // flex-wrap: wrap;
-    // align-items: center;
   }
 
   .header {
+    display: flex;
     justify-content: flex-start;
     align-items: center;
     width: max-content;
@@ -35,19 +31,10 @@
       color: #1890ff;
       margin: 0px 0px 4px 0px;
       font-size: 20px;
-      // max-width: 200px;
-      // max-height: 28px;
     }
 
     .like {
-      // background-color: white;
       border: none;
-      // margin: 0px 0px 2px 13px;
-      // height: 15px;
-      // width: 16px;
-      // border-radius: 0px;
-      // background-image: url(../../img/Vector.png);
-      // cursor: pointer;
       color: red;
     }
 
@@ -59,9 +46,8 @@
   }
 
   .info {
-    // display: flex;
     display: grid;
-    grid-template-columns: repeat(3,47px);
+    grid-template-columns: repeat(3, 47px);
     grid-column-gap: 10px;
 
     .tag {
@@ -79,6 +65,8 @@
       white-space: nowrap;
       overflow: hidden;
       max-width: 47px;
+      display: flex;
+      justify-content: center;
     }
 
     .text {
@@ -124,38 +112,37 @@
     margin-top: 30px;
 
     .Dbtn {
-        padding: 6px 10px;
-        width: 78px;
-        height: 40px;
-        color: #f5222d;
-        border: 1px solid #f5222d;
-        border-radius: 4px;
-        background-color: white;
-        font-size: 16px;
-        line-height: 24px;
-        cursor: pointer;
-        margin-right: 10px;
+      padding: 6px 10px;
+      width: 78px;
+      height: 40px;
+      color: #f5222d;
+      border: 1px solid #f5222d;
+      border-radius: 4px;
+      background-color: white;
+      font-size: 16px;
+      line-height: 24px;
+      cursor: pointer;
+      margin-right: 10px;
     }
 
     .Ebtn {
-        padding: 6px 15px;
-        width: 65px;
-        height: 26px;
-        color: #52C41A;
-        border: 1px solid #52C41A;
-        border-radius: 4px;
-        background-color: white;
-        font-size: 16px;
-        line-height: 24px;
-        cursor: pointer;
-        text-decoration: none;
+      padding: 6px 15px;
+      width: 65px;
+      height: 26px;
+      color: #52c41a;
+      border: 1px solid #52c41a;
+      border-radius: 4px;
+      background-color: white;
+      font-size: 16px;
+      line-height: 24px;
+      cursor: pointer;
+      text-decoration: none;
     }
   }
 
   .fullInfo {
-    // display: flex;
-    // word-break: break-all;
-    // margin-top: 50px;
-    // max-width: 880px;
+    margin-top: 60px;
+    word-break: break-all;
+    width: 880px;
   }
 }

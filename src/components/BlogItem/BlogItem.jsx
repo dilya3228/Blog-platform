@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addLike, delLike, postLikePost, deleteLikePost, fetchLikeArticle } from '../../store/Slice/getPostsSlice'
+import { addLike, delLike, postLikePost, deleteLikePost, likeArticle } from '../../store/Slice/getPostsSlice'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { Button } from 'antd'
 import classes from './BlogItem.module.scss'
@@ -33,7 +33,7 @@ const BlogItem = (props) => {
   const handleLike = () => {
     setLike(!like)
     setCount(like ? count - 1 : count + 1)
-    dispatch(fetchLikeArticle([like, slug]))
+    dispatch(likeArticle([like, slug]))
   }
 
   // const handleLike = () => {
@@ -75,15 +75,13 @@ const BlogItem = (props) => {
                 <h3 className={classes.headerTitle}>{hiddenTitle}</h3>
               </Link>
             </div>
-            {/* <button className={classes.like} onClick={handleLike}></button>
-            <div className={classes.likeCounter}>{likeCount}</div> */}
             {isIn || isReg ? (
               <Button
                 className={classes.like}
                 onClick={() => {
                   setLike(!like)
                   setCount(like ? count - 1 : count + 1)
-                  dispatch(fetchLikeArticle([like, slug]))
+                  dispatch(likeArticle([like, slug]))
                 }}
               >
                 {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}
@@ -94,18 +92,12 @@ const BlogItem = (props) => {
             <div className={classes.likeCounter}>{count}</div>
           </div>
           <div className={classes.info}>
-            {/* {tagList.map((el) => (
-              <>
-                <div className={classes.tag}>{el.substr(0, 10)}</div>
-              </>
-            ))} */}
             {tagList &&
               tagList.map((el) => (
                 <div className={classes.tag} key={el.id}>
                   {el.substr(0, 10)}
                 </div>
               ))}
-            {/* <div className={classes.tag}>{tagList}</div> */}
           </div>
           <div className={classes.text}>{description && description.length > 70 ? description.slice(0, description.indexOf('', 70)) + '...' : description}</div>
         </div>

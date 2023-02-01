@@ -35,7 +35,7 @@ export const deleteLikePost = createAsyncThunk('/articles/deleteLikePost', async
   return await deleteLike(slug)
 })
 
-export const fetchLikeArticle = createAsyncThunk('articles/fetchLikeArticle', async (slug, { rejectWithValue }) => {
+export const likeArticle = createAsyncThunk('articles/likeArticle', async (slug, { rejectWithValue }) => {
   const token = localStorage.getItem('token')
   const response = await fetch(`https://blog.kata.academy/api/articles/${slug[1]}/favorite`, {
     method: !slug[0] ? 'POST' : 'DELETE',
@@ -85,22 +85,6 @@ const getPostSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchLikeArticle.pending]: (state) => {
-      state.status = 'loading'
-      state.error = null
-    },
-    [fetchLikeArticle.fulfilled]: (state, { payload }) => {
-      state.status = 'resolve'
-      // state.likeCount = false
-      state.posts.articles.map((article) => {
-        if (article.slug === payload.article.slug) article = payload.article
-        return article
-      })
-    },
-    [fetchLikeArticle.rejected]: (state, action) => {
-      state.status = 'rejected'
-      state.error = action.payload
-    },
     [fetchPosts.pending]: (state) => {
       state.status = 'loading'
       state.error = null
@@ -145,7 +129,6 @@ const getPostSlice = createSlice({
     },
     [delPost.fulfilled]: (state, action) => {
       state.status = 'resolve'
-      // state.createPost = action.payload
     },
     [delPost.rejected]: (state, action) => {
       state.status = 'rejected'
@@ -159,7 +142,6 @@ const getPostSlice = createSlice({
     [putEdit.fulfilled]: (state, action) => {
       state.status = 'resolve'
       state.isEditPost = true
-      // state.createPost = action.payload
     },
     [putEdit.rejected]: (state, action) => {
       state.status = 'rejected'
@@ -171,8 +153,6 @@ const getPostSlice = createSlice({
     },
     [postLikePost.fulfilled]: (state, action) => {
       state.status = 'resolve'
-      // state.posts.favoritesCount = action.payload
-      // state.like = true
     },
     [postLikePost.rejected]: (state, action) => {
       state.status = 'rejected'
@@ -184,10 +164,23 @@ const getPostSlice = createSlice({
     },
     [deleteLikePost.fulfilled]: (state, action) => {
       state.status = 'resolve'
-      // state.posts.favoritesCount = action.payload
-      // state.like = false
     },
     [deleteLikePost.rejected]: (state, action) => {
+      state.status = 'rejected'
+      state.error = action.payload
+    },
+    [likeArticle.pending]: (state) => {
+      state.status = 'loading'
+      state.error = null
+    },
+    [likeArticle.fulfilled]: (state, { payload }) => {
+      state.status = 'resolve'
+      state.posts.articles.map((article) => {
+        if (article.slug === payload.article.slug) article = payload.article
+        return article
+      })
+    },
+    [likeArticle.rejected]: (state, action) => {
       state.status = 'rejected'
       state.error = action.payload
     },

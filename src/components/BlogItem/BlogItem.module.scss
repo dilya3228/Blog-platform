@@ -13,14 +13,11 @@
   .postInfo {
     display: flex;
     align-items: flex-start;
-    // width: 701px;
   }
 
   .title {
     width: 682px;
     display: grid;
-    // flex-wrap: wrap;
-    // align-items: center;
   }
 
   .header {
@@ -33,19 +30,10 @@
       color: #1890ff;
       margin: 0px 0px 4px 0px;
       font-size: 20px;
-      // max-width: 200px;
-      // max-height: 28px;
     }
 
     .like {
-      // background-color: white;
       border: none;
-      // margin: 0px 0px 2px 13px;
-      // height: 15px;
-      // width: 16px;
-      // border-radius: 0px;
-      // background-image: url(../../img/Vector.png);
-      // cursor: pointer;
       color: red;
     }
 
@@ -57,7 +45,6 @@
   }
 
   .info {
-    // display: flex;
     display: grid;
     grid-template-columns: auto auto auto;
     width: max-content;
@@ -81,11 +68,6 @@
     }
 
     .text {
-      // display: flex;
-      // grid-row-start: 2;
-      // grid-row-end: 5;
-      // grid-column-start: 2;
-      // grid-column-end: 4;
       width: 682px;
       font-size: 12px;
       line-height: 22px;
@@ -100,7 +82,6 @@
 
   .userInfo {
     display: flex;
-    // margin-left: 125px;
 
     .userContainer {
       width: max-content;

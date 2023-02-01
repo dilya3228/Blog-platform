@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
 import { format } from 'date-fns'
-import { fetchSlug, delPost, putEdittt, fetchLikeArticle } from '../../../store/Slice/getPostsSlice'
+import { fetchSlug, delPost, putEdittt, likeArticle } from '../../../store/Slice/getPostsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -25,8 +25,8 @@ const ModalFullPost = () => {
   const [like, setLike] = useState(favorited)
   const [count, setCount] = useState(favoritesCount)
 
-  const hiddenText = description && description.length > 120 ? description.slice(0, description.indexOf('', 100)) + '...' : description
-  const hiddenTitle = title && title.length > 25 ? title.slice(0, title.indexOf('', 60)) + '...' : title
+  const hiddenText = description && description.length > 100 ? description.slice(0, description.indexOf('', 70)) + '...' : description
+  const hiddenTitle = title && title.length > 25 ? title.slice(0, title.indexOf('', 40)) + '...' : title
 
   const formatData = (data) => {
     if (!data) return null
@@ -75,7 +75,7 @@ const ModalFullPost = () => {
                     onClick={() => {
                       setLike(!like)
                       setCount(like ? count - 1 : count + 1)
-                      dispatch(fetchLikeArticle([like, slug]))
+                      dispatch(likeArticle([like, slug]))
                     }}
                   >
                     {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}

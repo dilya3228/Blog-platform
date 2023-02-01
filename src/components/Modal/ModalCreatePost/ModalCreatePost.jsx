@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Navigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createPost } from '../../../store/Slice/getPostsSlice'
 import classes from './ModalCreatePost.module.scss'
 
 const ModalCreatePost = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const location = useLocation()
   const { isCreatePost } = useSelector((state) => state.posts)
-  const { isIn, isReg } = useSelector((state) => state.user)
 
   const [unputs, setInputs] = useState([''])
 
@@ -75,6 +73,8 @@ const ModalCreatePost = () => {
               placeholder="Title"
               {...register('title', {
                 required: 'Поле обязательно для заполнения',
+                minLength: { value: 3, message: 'Минимум 3 символов' },
+                maxLength: { value: 50, message: 'Максимум 50 символов' },
               })}
             />
           </label>
@@ -88,6 +88,8 @@ const ModalCreatePost = () => {
               placeholder="Short description"
               {...register('description', {
                 required: 'Поле обязательно для заполнения',
+                minLength: { value: 3, message: 'Минимум 3 символов' },
+                maxLength: { value: 80, message: 'Максимум 80 символов' },
               })}
             />
           </label>
@@ -101,6 +103,8 @@ const ModalCreatePost = () => {
               placeholder="Text"
               {...register('body', {
                 required: 'Поле обязательно для заполнения',
+                minLength: { value: 3, message: 'Минимум 3 символов' },
+                maxLength: { value: 1000, message: 'Максимум 50 символов' },
               })}
             />
           </label>
@@ -117,9 +121,6 @@ const ModalCreatePost = () => {
                     value={singlInput}
                     className={classes.inputTag}
                     placeholder="Tag"
-                    // {...register('tag', {
-                    //   pattern: { value: singlInput.service },
-                    // })}
                     onChange={(e) => handleChange(e, index)}
                   />
                   {unputs.length > 1 && (
