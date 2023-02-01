@@ -11,8 +11,8 @@ export const fetchPosts = createAsyncThunk('/articles/fetchPosts', async (offset
   return await getListPost(offset, { rejectWithValue })
 })
 
-export const fetchSlug = createAsyncThunk('/articles/fetchSlug', async ({ rejectWithValue }) => {
-  return await getSlug({ rejectWithValue })
+export const fetchSlug = createAsyncThunk('/articles/fetchSlug', async (slug, { rejectWithValue }) => {
+  return await getSlug(slug, { rejectWithValue })
 })
 
 export const createPost = createAsyncThunk('/articles/createPost', async (userRegData, { rejectWithValue }) => {

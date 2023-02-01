@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
 import { format } from 'date-fns'
-import { fetchSlug, delPost, putEdittt } from '../../../store/Slice/getPostsSlice'
+import { fetchSlug, delPost, putEdittt, fetchLikeArticle } from '../../../store/Slice/getPostsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import { message, Popconfirm } from 'antd'
+import { message, Popconfirm, Button } from 'antd'
+import { HeartOutlined, HeartFilled } from '@ant-design/icons'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
+import Alert from '@mui/material/Alert'
+import Stack from '@mui/material/Stack'
 import classes from './ModalFullPost.module.scss'
 
 const ModalFullPost = () => {
@@ -13,15 +18,15 @@ const ModalFullPost = () => {
   const { slug } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const { title, author, createdAt, description, favoritesCount, tagList, body, favorited } = location.state
+  const { title, author, createdAt, description, favoritesCount, tagList, body, key, favorited } = location.state
   const { username } = useSelector((state) => state.user.user)
+  const { isIn, isReg } = useSelector((state) => state.user)
+  const { error, status } = useSelector((state) => state.posts)
+  const [like, setLike] = useState(favorited)
+  const [count, setCount] = useState(favoritesCount)
 
   const hiddenText = description && description.length > 120 ? description.slice(0, description.indexOf('', 100)) + '...' : description
   const hiddenTitle = title && title.length > 25 ? title.slice(0, title.indexOf('', 60)) + '...' : title
-
-  useEffect(() => {
-    dispatch(fetchSlug(slug))
-  }, [dispatch, slug])
 
   const formatData = (data) => {
     if (!data) return null
@@ -37,77 +42,110 @@ const ModalFullPost = () => {
     message.error('Отмена удаления поста')
   }
 
-  const handleLike = () => {
-    // dispatch(postLikePost(slug, favorited))
-    // setLikeCount(likeCount + 1)
-  }
+  useEffect(() => {
+    dispatch(fetchSlug(key))
+    if (favorited || !favorited) {
+      setLike(favorited)
+    }
+    setCount(favoritesCount)
+  }, [slug, favorited, favoritesCount, dispatch])
+
   // console.log(.trim().slice(0, 1700))
   return (
     <div className={classes.item}>
-      <div className={classes.postInfo}>
-        <div className={classes.title}>
-          <div className={classes.header}>
-            <h3 className={classes.headerTitle}>{hiddenTitle}</h3>
-            <button className={classes.like} onClick={handleLike}></button>
-            <div className={classes.likeCounter}>{favoritesCount}</div>
+      {status === 'loading' && (
+        <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+          <CircularProgress color="success" />
+        </Box>
+      )}{' '}
+      {error && (
+        <Stack sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', marginTop: '30px' }} spacing={2}>
+          <Alert severity="error">Посты не найден</Alert>
+        </Stack>
+      )}
+      {key === slug ? (
+        <>
+          <div className={classes.postInfo}>
+            <div className={classes.title}>
+              <div className={classes.header}>
+                <h3 className={classes.headerTitle}>{hiddenTitle}</h3>
+                {isIn || isReg ? (
+                  <Button
+                    className={classes.like}
+                    onClick={() => {
+                      setLike(!like)
+                      setCount(like ? count - 1 : count + 1)
+                      dispatch(fetchLikeArticle([like, slug]))
+                    }}
+                  >
+                    {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}
+                  </Button>
+                ) : (
+                  <HeartOutlined />
+                )}
+                <div className={classes.likeCounter}>{count}</div>
+              </div>
+              <div className={classes.info}>
+                {tagList &&
+                  tagList.map((el) => (
+                    <div className={classes.tag} key={el.id}>
+                      {el.substr(0, 10)}
+                    </div>
+                  ))}
+              </div>
+              <div className={classes.text}>{hiddenText}</div>
+              <div className={classes.fullInfo}>
+                <ReactMarkdown>{body}</ReactMarkdown>
+              </div>
+            </div>
           </div>
-          <div className={classes.info}>
-            {tagList &&
-              tagList.map((el) => (
-                <div className={classes.tag} key={el.id}>
-                  {el.substr(0, 10)}
-                </div>
-              ))}
-          </div>
-          <div className={classes.text}>{hiddenText}</div>
-          <div className={classes.fullInfo}>
-            <ReactMarkdown>{body}</ReactMarkdown>
-          </div>
-        </div>
-      </div>
-      <div className={classes.userInfo}>
-        <div className={classes.userContainer}>
-          <div className={classes.name}>{author.username}</div>
-          <div className={classes.date}>{formatData(createdAt)}</div>
-          <div className={classes.DBbtns}>
-            {author.username === username && (
-              <>
-                <Popconfirm
-                  title="Delete the task"
-                  description="Are you sure to delete this task?"
-                  onConfirm={confirm}
-                  onCancel={cancel}
-                  okText="Yes"
-                  cancelText="No"
-                >
-                  <button type="submit" className={classes.Dbtn}>
-                    Delete
-                  </button>
-                </Popconfirm>
+          <div className={classes.userInfo}>
+            <div className={classes.userContainer}>
+              <div className={classes.name}>{author.username}</div>
+              <div className={classes.date}>{formatData(createdAt)}</div>
+              <div className={classes.DBbtns}>
+                {author.username === username && (
+                  <>
+                    <Popconfirm
+                      title="Delete the task"
+                      description="Are you sure to delete this task?"
+                      onConfirm={confirm}
+                      onCancel={cancel}
+                      okText="Yes"
+                      cancelText="No"
+                    >
+                      <button type="submit" className={classes.Dbtn}>
+                        Delete
+                      </button>
+                    </Popconfirm>
 
-                <Link
-                  to={`/edit`}
-                  className={classes.Ebtn}
-                  state={{
-                    key: slug,
-                    author: author,
-                    title: title,
-                    description: description,
-                    createdAt: createdAt,
-                    favoritesCount: favoritesCount,
-                    tagList: tagList,
-                    body: body,
-                  }}
-                  onClick={() => dispatch(putEdittt())}
-                >
-                  Edit
-                </Link>
-              </>
-            )}
+                    <Link
+                      to={`/edit`}
+                      className={classes.Ebtn}
+                      state={{
+                        key: slug,
+                        author: author,
+                        title: title,
+                        description: description,
+                        createdAt: createdAt,
+                        favoritesCount: favoritesCount,
+                        tagList: tagList,
+                        body: body,
+                      }}
+                      onClick={() => dispatch(putEdittt())}
+                    >
+                      Edit
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+            <img className={classes.avatar} src={author.image}></img>
           </div>
-        </div>
-        <img className={classes.avatar} src={author.image}></img>
-      </div>
+        </>
+      ) : (
+        <h2>Статья не найдена</h2>
+      )}
     </div>
   )
 }

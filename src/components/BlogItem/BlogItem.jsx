@@ -68,6 +68,7 @@ const BlogItem = (props) => {
                   favoritesCount: favoritesCount,
                   tagList: tagList,
                   body: body,
+                  favorited: favorited,
                 }}
                 className={classes.none}
               >
@@ -76,18 +77,21 @@ const BlogItem = (props) => {
             </div>
             {/* <button className={classes.like} onClick={handleLike}></button>
             <div className={classes.likeCounter}>{likeCount}</div> */}
-            <Button
-              className={classes.like}
-              onClick={() => {
-                setLike(!like)
-                setCount(like ? count - 1 : count + 1)
-                dispatch(fetchLikeArticle([like, slug]))
-              }}
-            >
-              {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}
-              {count}
-            </Button>
-            {/* <div className={classes.likeCounter}>{likeCount}</div> */}
+            {isIn || isReg ? (
+              <Button
+                className={classes.like}
+                onClick={() => {
+                  setLike(!like)
+                  setCount(like ? count - 1 : count + 1)
+                  dispatch(fetchLikeArticle([like, slug]))
+                }}
+              >
+                {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}
+              </Button>
+            ) : (
+              <HeartOutlined />
+            )}
+            <div className={classes.likeCounter}>{count}</div>
           </div>
           <div className={classes.info}>
             {/* {tagList.map((el) => (
@@ -103,9 +107,7 @@ const BlogItem = (props) => {
               ))}
             {/* <div className={classes.tag}>{tagList}</div> */}
           </div>
-          <div className={classes.text}>
-            {description && description.length > 120 ? description.slice(0, description.indexOf('', 145)) + '...' : description}
-          </div>
+          <div className={classes.text}>{description && description.length > 70 ? description.slice(0, description.indexOf('', 70)) + '...' : description}</div>
         </div>
       </div>
       <div className={classes.userInfo}>
