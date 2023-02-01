@@ -4,6 +4,8 @@ import { getSlug } from '../../service/getPostsSlug'
 import { postCreatePost } from '../../service/postCreatePost'
 import { deletePost } from '../../service/deletePost'
 import { putEditPost } from '../../service/putEditPost'
+import { postLike } from '../../service/postLike'
+import { deleteLike } from '../../service/deleteLike'
 
 export const fetchPosts = createAsyncThunk('/articles/fetchPosts', async (offset, { rejectWithValue }) => {
   return await getListPost(offset, { rejectWithValue })
@@ -21,8 +23,16 @@ export const delPost = createAsyncThunk('/articles/delPost', async (slug) => {
   return await deletePost(slug)
 })
 
-export const putEdit = createAsyncThunk('/articles/delPost', async (slug, userRegData) => {
-  return await putEditPost(slug, userRegData)
+export const putEdit = createAsyncThunk('/articles/putEdit', async (slug, article) => {
+  return await putEditPost(slug, article)
+})
+
+export const postLikePost = createAsyncThunk('/articles/postLikePost', async (slug, favorited) => {
+  return await postLike(slug, favorited)
+})
+
+export const deleteLikePost = createAsyncThunk('/articles/deleteLikePost', async (slug) => {
+  return await deleteLike(slug)
 })
 
 const getPostSlice = createSlice({
@@ -37,6 +47,7 @@ const getPostSlice = createSlice({
     articlesCount: 0,
     isCreatePost: false,
     isEditPost: false,
+    like: false,
   },
   reducers: {
     SetOffset: function (state, { payload }) {
@@ -50,6 +61,12 @@ const getPostSlice = createSlice({
     },
     putEdittt(state) {
       state.isEditPost = false
+    },
+    addLike(state) {
+      state.like = true
+    },
+    delLike(state) {
+      state.like = false
     },
   },
   extraReducers: {
@@ -117,9 +134,35 @@ const getPostSlice = createSlice({
       state.status = 'rejected'
       state.error = action.payload
     },
+    [postLikePost.pending]: (state) => {
+      state.status = 'loading'
+      state.error = null
+    },
+    [postLikePost.fulfilled]: (state, action) => {
+      state.status = 'resolve'
+      // state.posts.favoritesCount = action.payload
+      // state.like = true
+    },
+    [postLikePost.rejected]: (state, action) => {
+      state.status = 'rejected'
+      state.error = action.payload
+    },
+    [deleteLikePost.pending]: (state) => {
+      state.status = 'loading'
+      state.error = null
+    },
+    [deleteLikePost.fulfilled]: (state, action) => {
+      state.status = 'resolve'
+      // state.posts.favoritesCount = action.payload
+      // state.like = false
+    },
+    [deleteLikePost.rejected]: (state, action) => {
+      state.status = 'rejected'
+      state.error = action.payload
+    },
   },
 })
 
-export const { SetOffset, SetPage, createArticle, putEdittt } = getPostSlice.actions
+export const { SetOffset, SetPage, createArticle, putEdittt, addLike, delLike } = getPostSlice.actions
 
 export default getPostSlice.reducer

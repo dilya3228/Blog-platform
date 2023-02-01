@@ -1,11 +1,11 @@
 import instance from './instance'
-export const putEditPost = async (slug, userRegData) => {
+export const putEditPost = async (slug, article) => {
   const token = localStorage.getItem('token')
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
+    Authorization: `Token ${token}`,
   }
-  const res = await instance.put(`/articles/${slug}`, userRegData, { headers })
+  const res = await instance.put(`/articles/${slug}`, article, { headers })
   if (res.status >= 400) {
     throw new Error('ошибка обработки данных')
   }

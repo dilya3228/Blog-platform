@@ -107,8 +107,8 @@ const ModalCreatePost = () => {
           <div className={classes.error}>{errors?.body && <p>{errors?.body?.message || 'Error!'}</p>}</div>
           <span className={classes.labelTitleTag}>Tag</span>
           <label htmlFor="Tag" className={classes.wrapTag}>
-            {unputs.map((singlInput, index) => (
-              <>
+            <>
+              {unputs.map((singlInput, index) => (
                 <div key={index}>
                   <input
                     name="service"
@@ -134,8 +134,8 @@ const ModalCreatePost = () => {
                     </button>
                   )}
                 </div>
-              </>
-            ))}
+              ))}
+            </>
           </label>
           <button type="submit" className={classes.sendBtn}>
             Send

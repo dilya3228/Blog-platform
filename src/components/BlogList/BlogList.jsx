@@ -16,6 +16,7 @@ const BlogList = () => {
     status,
     offset,
     actuallyPage,
+    like,
     posts: { articles, articlesCount },
   } = useSelector((state) => state.posts)
 

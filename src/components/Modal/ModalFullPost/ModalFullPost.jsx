@@ -13,11 +13,11 @@ const ModalFullPost = () => {
   const { slug } = useParams()
   const location = useLocation()
   const navigate = useNavigate()
-  const { title, author, createdAt, description, favoritesCount, tagList, body } = location.state
+  const { title, author, createdAt, description, favoritesCount, tagList, body, favorited } = location.state
   const { username } = useSelector((state) => state.user.user)
 
-  const hiddenText = description.length > 120 ? description.slice(0, description.indexOf('', 100)) + '...' : description
-  const hiddenTitle = title.length > 25 ? title.slice(0, title.indexOf('', 60)) + '...' : title
+  const hiddenText = description && description.length > 120 ? description.slice(0, description.indexOf('', 100)) + '...' : description
+  const hiddenTitle = title && title.length > 25 ? title.slice(0, title.indexOf('', 60)) + '...' : title
 
   useEffect(() => {
     dispatch(fetchSlug(slug))
@@ -36,6 +36,11 @@ const ModalFullPost = () => {
   const cancel = (e) => {
     message.error('Отмена удаления поста')
   }
+
+  const handleLike = () => {
+    // dispatch(postLikePost(slug, favorited))
+    // setLikeCount(likeCount + 1)
+  }
   // console.log(.trim().slice(0, 1700))
   return (
     <div className={classes.item}>
@@ -43,7 +48,7 @@ const ModalFullPost = () => {
         <div className={classes.title}>
           <div className={classes.header}>
             <h3 className={classes.headerTitle}>{hiddenTitle}</h3>
-            <button className={classes.like}></button>
+            <button className={classes.like} onClick={handleLike}></button>
             <div className={classes.likeCounter}>{favoritesCount}</div>
           </div>
           <div className={classes.info}>
@@ -56,7 +61,7 @@ const ModalFullPost = () => {
           </div>
           <div className={classes.text}>{hiddenText}</div>
           <div className={classes.fullInfo}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+            <ReactMarkdown>{body}</ReactMarkdown>
           </div>
         </div>
       </div>
