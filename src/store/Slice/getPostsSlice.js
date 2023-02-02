@@ -139,10 +139,14 @@ const getPostSlice = createSlice({
       state.error = null
       state.isEditPost = false
     },
-    [putEdit.fulfilled]: (state, action) => {
+    [putEdit.fulfilled]: (state, { payload }) => {
       state.status = 'resolve'
       state.isEditPost = true
-      // state.posts = action.payload
+      // state.posts.articles = payload
+      // state.posts.articles.map((article) => {
+      //   return (article = payload)
+      //   // return article
+      // })
     },
     [putEdit.rejected]: (state, action) => {
       state.status = 'rejected'

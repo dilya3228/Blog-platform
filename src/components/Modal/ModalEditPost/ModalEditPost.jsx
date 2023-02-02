@@ -46,7 +46,7 @@ const ModalEditPost = () => {
         title: data.title,
         description: data.description,
         body: data.body,
-        tagList: [],
+        tagList: data.tagList.map((tag) => tag.name),
       },
     }
     dispatch(putEdit(key, stateEditPost))
