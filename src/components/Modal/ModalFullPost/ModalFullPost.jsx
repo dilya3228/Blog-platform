@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { fetchSlug, delPost, putEdittt, likeArticle } from '../../../store/Slice/getPostsSlice'
-import { useDispatch, useSelector } from 'react-redux'
 import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
 import { message, Popconfirm, Button } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import Box from '@mui/material/Box'
@@ -13,7 +12,7 @@ import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
 import classes from './ModalFullPost.module.scss'
 
-const ModalFullPost = () => {
+const ModalFullPost = (props) => {
   const dispatch = useDispatch()
   const { slug } = useParams()
   const location = useLocation()
@@ -42,13 +41,19 @@ const ModalFullPost = () => {
     message.error('Отмена удаления поста')
   }
 
+  // useEffect(() => {
+  //   dispatch(fetchSlug(key))
+  //   if (favorited || !favorited) {
+  //     setLike(favorited)
+  //   }
+  //   setCount(favoritesCount)
+  // }, [slug, favorited, favoritesCount, dispatch])
   useEffect(() => {
-    dispatch(fetchSlug(key))
     if (favorited || !favorited) {
       setLike(favorited)
     }
     setCount(favoritesCount)
-  }, [slug, favorited, favoritesCount, dispatch])
+  }, [slug, favorited, favoritesCount])
 
   // console.log(.trim().slice(0, 1700))
   return (
@@ -81,7 +86,7 @@ const ModalFullPost = () => {
                     {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}
                   </Button>
                 ) : (
-                  <HeartOutlined />
+                  <HeartOutlined style={{ marginLeft: '10px' }} />
                 )}
                 <div className={classes.likeCounter}>{count}</div>
               </div>
@@ -89,7 +94,8 @@ const ModalFullPost = () => {
                 {tagList &&
                   tagList.map((el) => (
                     <div className={classes.tag} key={el.id}>
-                      {el.substr(0, 10)}
+                      {/* {el.substr(0, 10)} */}
+                      {el?.length > 6 ? `${el.slice(0, 6)}` : el}
                     </div>
                   ))}
               </div>

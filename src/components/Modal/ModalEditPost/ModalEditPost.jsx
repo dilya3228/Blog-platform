@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { putEdit } from '../../../store/Slice/getPostsSlice'
 import { useDispatch, useSelector } from 'react-redux'
@@ -46,17 +46,18 @@ const ModalEditPost = () => {
         title: data.title,
         description: data.description,
         body: data.body,
+        tagList: [],
       },
     }
     dispatch(putEdit(key, stateEditPost))
-    reset()
+    // reset()
   }
 
   useEffect(() => {
     if (isEditPost) {
       navigate('/', { replace: true })
     }
-    reset()
+    // reset()
   }, [isEditPost])
 
   return (
@@ -105,31 +106,29 @@ const ModalEditPost = () => {
           <span className={classes.labelTitleTag}>Tags</span>
           <label htmlFor="Tags" className={classes.wrapTag}>
             {unputs.map((singlInput, index) => (
-              <>
-                <div key={index}>
-                  <input
-                    name="service"
-                    id="Tag"
-                    type="text"
-                    defaultValue={singlInput}
-                    // value={singlInput}
-                    className={classes.inputTag}
-                    placeholder="Tag"
-                    onChange={(e) => handleChange(e, index)}
-                  />
-                  {unputs.length > 1 && (
-                    <button onClick={() => handelDel(index)} className={classes.wrapperBtnDel}>
-                      Delete
-                    </button>
-                  )}
+              <div key={index}>
+                <input
+                  name="service"
+                  id="Tag"
+                  type="text"
+                  defaultValue={singlInput}
+                  // value={singlInput}
+                  className={classes.inputTag}
+                  placeholder="Tag"
+                  onChange={(e) => handleChange(e, index)}
+                />
+                {unputs.length > 1 && (
+                  <button onClick={() => handelDel(index)} className={classes.wrapperBtnDel}>
+                    Delete
+                  </button>
+                )}
 
-                  {unputs.length - 1 === index && unputs.length < 4 && (
-                    <button onClick={handelAdd} className={classes.wrapperBtnAdd}>
-                      Add tag
-                    </button>
-                  )}
-                </div>
-              </>
+                {unputs.length - 1 === index && unputs.length < 4 && (
+                  <button onClick={handelAdd} className={classes.wrapperBtnAdd}>
+                    Add tag
+                  </button>
+                )}
+              </div>
             ))}
           </label>
           <button type="submit" className={classes.sendBtn}>

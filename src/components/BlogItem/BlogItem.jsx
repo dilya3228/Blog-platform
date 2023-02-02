@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { format } from 'date-fns'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { addLike, delLike, postLikePost, deleteLikePost, likeArticle } from '../../store/Slice/getPostsSlice'
+import { format } from 'date-fns'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { Button } from 'antd'
 import classes from './BlogItem.module.scss'
@@ -87,17 +87,16 @@ const BlogItem = (props) => {
                 {like ? <HeartFilled style={{ color: '#FF0707' }} /> : <HeartOutlined />}
               </Button>
             ) : (
-              <HeartOutlined />
+              <HeartOutlined style={{ marginLeft: '10px' }} />
             )}
             <div className={classes.likeCounter}>{count}</div>
           </div>
           <div className={classes.info}>
-            {tagList &&
-              tagList.map((el) => (
-                <div className={classes.tag} key={el.id}>
-                  {el.substr(0, 10)}
-                </div>
-              ))}
+            {tagList?.map((el) => (
+              <div className={classes.tag} key={el}>
+                {el}
+              </div>
+            ))}
           </div>
           <div className={classes.text}>{description && description.length > 70 ? description.slice(0, description.indexOf('', 70)) + '...' : description}</div>
         </div>

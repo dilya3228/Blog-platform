@@ -53,7 +53,7 @@ const ModalLogin = ({ children }) => {
               placeholder="Email address"
             />
           </label>
-          <div className={classes.error}>{errors?.email && <p>{errors?.email?.message || 'Ввудите корpектный Email!'}</p>}</div>
+          <div className={classes.error}>{errors?.email && <p>{errors?.email?.message || 'Введите корpектный Email!'}</p>}</div>
           <span className={classes.labelTitle}>Password</span>
           <label htmlFor="password" className={classes.label}>
             <input
@@ -68,7 +68,7 @@ const ModalLogin = ({ children }) => {
               placeholder="Password"
             />
           </label>
-          <div className={classes.error}>{errors?.Password && <p>{errors?.Password?.message || 'Error!'}</p>}</div>
+          <div className={classes.error}>{errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}</div>
           <button type="submit" className={classes.loginBtn}>
             Login
           </button>
