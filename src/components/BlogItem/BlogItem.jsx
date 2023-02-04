@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addLike, delLike, postLikePost, deleteLikePost, likeArticle, fetchSlug } from '../../store/Slice/getPostsSlice'
+import { likeArticle } from '../../store/Slice/getPostsSlice'
 import { format } from 'date-fns'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { Button } from 'antd'

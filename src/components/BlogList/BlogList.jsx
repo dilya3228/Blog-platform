@@ -26,7 +26,7 @@ const BlogList = () => {
 
   useEffect(() => {
     dispatch(fetchPosts(offset))
-  }, [dispatch, offset])
+  }, [dispatch, offset, articlesCount])
   return (
     <>
       {status === 'loading' && (

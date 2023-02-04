@@ -4,8 +4,6 @@ import { getSlug } from '../../service/getPostsSlug'
 import { postCreatePost } from '../../service/postCreatePost'
 import { deletePost } from '../../service/deletePost'
 import { putEditPost } from '../../service/putEditPost'
-import { postLike } from '../../service/postLike'
-import { deleteLike } from '../../service/deleteLike'
 
 export const fetchPosts = createAsyncThunk('/articles/fetchPosts', async (offset, { rejectWithValue }) => {
   return await getListPost(offset, { rejectWithValue })
@@ -19,35 +17,27 @@ export const createPost = createAsyncThunk('/articles/createPost', async (userRe
   return await postCreatePost(userRegData, { rejectWithValue })
 })
 
-export const delPost = createAsyncThunk('/articles/delPost', async (slug) => {
-  return await deletePost(slug)
+export const delPost = createAsyncThunk('/articles/delPost', async (slug, { rejectWithValue }) => {
+  return await deletePost(slug, { rejectWithValue })
 })
 
 export const putEdit = createAsyncThunk('/articles/putEdit', async (slugData, { rejectWithValue }) => {
   return await putEditPost(slugData, { rejectWithValue })
 })
 
-export const postLikePost = createAsyncThunk('/articles/postLikePost', async (slug, favorited) => {
-  return await postLike(slug, favorited)
-})
-
-export const deleteLikePost = createAsyncThunk('/articles/deleteLikePost', async (slug) => {
-  return await deleteLike(slug)
-})
-
 export const likeArticle = createAsyncThunk('articles/likeArticle', async (slug, { rejectWithValue }) => {
   const token = localStorage.getItem('token')
-  const response = await fetch(`https://blog.kata.academy/api/articles/${slug[1]}/favorite`, {
+  const res = await fetch(`https://blog.kata.academy/api/articles/${slug[1]}/favorite`, {
     method: !slug[0] ? 'POST' : 'DELETE',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
   })
-  if (!response.ok) {
+  if (!res.ok) {
     return rejectWithValue('Лайк не поставлен')
   }
-  return await response.json()
+  return await res.json()
 })
 
 const getPostSlice = createSlice({
@@ -79,7 +69,6 @@ const getPostSlice = createSlice({
     articlesCount: 0,
     isCreatePost: false,
     isEditPost: false,
-    like: false,
   },
   reducers: {
     SetOffset: function (state, { payload }) {
@@ -93,12 +82,6 @@ const getPostSlice = createSlice({
     },
     putEdittt(state) {
       state.isEditPost = false
-    },
-    addLike(state) {
-      state.like = true
-    },
-    delLike(state) {
-      state.like = false
     },
   },
   extraReducers: {
@@ -176,30 +159,8 @@ const getPostSlice = createSlice({
       state.status = 'rejected'
       state.error = action.payload
     },
-    [postLikePost.pending]: (state) => {
-      state.status = 'loading'
-      state.error = null
-    },
-    [postLikePost.fulfilled]: (state, action) => {
-      state.status = 'resolve'
-    },
-    [postLikePost.rejected]: (state, action) => {
-      state.status = 'rejected'
-      state.error = action.payload
-    },
-    [deleteLikePost.pending]: (state) => {
-      state.status = 'loading'
-      state.error = null
-    },
-    [deleteLikePost.fulfilled]: (state, action) => {
-      state.status = 'resolve'
-    },
-    [deleteLikePost.rejected]: (state, action) => {
-      state.status = 'rejected'
-      state.error = action.payload
-    },
     [likeArticle.pending]: (state) => {
-      state.status = 'loading'
+      // state.status = 'loading'
       state.error = null
     },
     [likeArticle.fulfilled]: (state, { payload }) => {
@@ -216,6 +177,6 @@ const getPostSlice = createSlice({
   },
 })
 
-export const { SetOffset, SetPage, createArticle, putEdittt, addLike, delLike } = getPostSlice.actions
+export const { SetOffset, SetPage, createArticle, putEdittt } = getPostSlice.actions
 
 export default getPostSlice.reducer
