@@ -29,7 +29,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path="edit" element={<ModalEditPost />} />
+          <Route path="articles/:slug/edit" element={<ModalEditPost />} />
         </Route>
       </Routes>
     </div>

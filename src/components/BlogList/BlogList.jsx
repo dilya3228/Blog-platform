@@ -39,7 +39,11 @@ const BlogList = () => {
           <Alert severity="error">Ошибка - посты не найдены</Alert>
         </Stack>
       )}
-      <ul className={classes.wrapper}>{articles && articles.map((el) => <BlogItem key={el.slug} {...el} />)}</ul>
+      <ul className={classes.wrapper}>
+        {articles?.map((el) => (
+          <BlogItem key={el.slug} article={el} />
+        ))}
+      </ul>
       <div className={classes.paginate}>
         <Pagination current={actuallyPage} defaultPageSize={5} onChange={(e) => handlePaginate(e)} defaultCurrent={1} total={articlesCount} />
       </div>

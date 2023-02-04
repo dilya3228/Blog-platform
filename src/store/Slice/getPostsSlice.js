@@ -23,8 +23,8 @@ export const delPost = createAsyncThunk('/articles/delPost', async (slug) => {
   return await deletePost(slug)
 })
 
-export const putEdit = createAsyncThunk('/articles/putEdit', async (slug, article) => {
-  return await putEditPost(slug, article)
+export const putEdit = createAsyncThunk('/articles/putEdit', async (slugData, { rejectWithValue }) => {
+  return await putEditPost(slugData, { rejectWithValue })
 })
 
 export const postLikePost = createAsyncThunk('/articles/postLikePost', async (slug, favorited) => {
@@ -54,6 +54,23 @@ const getPostSlice = createSlice({
   name: 'posts',
   initialState: {
     posts: [],
+    article: {
+      slug: '',
+      title: '',
+      description: '',
+      body: '',
+      createdAt: '',
+      updatedAt: '',
+      tagList: [],
+      favorited: false,
+      favoritesCount: 0,
+      author: {
+        username: '',
+        bio: '',
+        image: '',
+        following: false,
+      },
+    },
     createPost: [],
     status: null,
     error: null,
@@ -92,6 +109,9 @@ const getPostSlice = createSlice({
     [fetchPosts.fulfilled]: (state, action) => {
       state.status = 'resolve'
       state.posts = action.payload
+      state.articlesCount = action.payload
+      state.isEditPost = false
+      state.isCreatePost = false
     },
     [fetchPosts.rejected]: (state, action) => {
       state.status = 'rejected'
@@ -100,10 +120,13 @@ const getPostSlice = createSlice({
     [fetchSlug.pending]: (state) => {
       state.status = 'loading'
       state.error = null
+      // state.isEditPost = false
     },
     [fetchSlug.fulfilled]: (state, action) => {
       state.status = 'resolve'
-      state.slug = action.payload
+      state.posts = action.payload
+      state.article = action.payload
+      // state.isEditPost = true
     },
     [fetchSlug.rejected]: (state, action) => {
       state.status = 'rejected'
@@ -116,7 +139,7 @@ const getPostSlice = createSlice({
     },
     [createPost.fulfilled]: (state, action) => {
       state.status = 'resolve'
-      state.createPost = action.payload
+      // state.createPost = action.payload
       state.isCreatePost = true
     },
     [createPost.rejected]: (state, action) => {
@@ -139,9 +162,10 @@ const getPostSlice = createSlice({
       state.error = null
       state.isEditPost = false
     },
-    [putEdit.fulfilled]: (state, { payload }) => {
+    [putEdit.fulfilled]: (state, action) => {
       state.status = 'resolve'
       state.isEditPost = true
+      // state.posts.article = action.payload
       // state.posts.articles = payload
       // state.posts.articles.map((article) => {
       //   return (article = payload)

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { addLike, delLike, postLikePost, deleteLikePost, likeArticle } from '../../store/Slice/getPostsSlice'
+import { addLike, delLike, postLikePost, deleteLikePost, likeArticle, fetchSlug } from '../../store/Slice/getPostsSlice'
 import { format } from 'date-fns'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { Button } from 'antd'
 import classes from './BlogItem.module.scss'
 
-const BlogItem = (props) => {
+const BlogItem = ({ article }) => {
   const dispatch = useDispatch()
-  const { author, title, createdAt, description, favoritesCount, tagList, body, slug, favorited } = props
+  const { author, title, createdAt, description, favoritesCount, tagList, body, slug, favorited } = article
   const {
     posts: { articles, articlesCount },
   } = useSelector((state) => state.posts)
@@ -30,24 +30,6 @@ const BlogItem = (props) => {
     setCount(favoritesCount)
   }, [slug, favorited, favoritesCount])
 
-  const handleLike = () => {
-    setLike(!like)
-    setCount(like ? count - 1 : count + 1)
-    dispatch(likeArticle([like, slug]))
-  }
-
-  // const handleLike = () => {
-  //   if (!like) {
-  //     dispatch(postLikePost(slug, favorited))
-  //     setLikeCount(likeCount + 1)
-  //     dispatch(addLike(like))
-  //   } else {
-  //     dispatch(deleteLikePost(slug))
-  //     setLikeCount(likeCount - 1)
-  //     dispatch(delLike(like))
-  //   }
-  // }
-
   const hiddenTitle = title && title.length > 25 ? title.slice(0, title.indexOf('', 25)) + '...' : title
 
   return (
@@ -57,7 +39,6 @@ const BlogItem = (props) => {
           <div className={classes.header}>
             <div>
               <Link
-                // key={slug}
                 to={`/articles/${slug}`}
                 state={{
                   key: slug,

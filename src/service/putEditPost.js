@@ -1,35 +1,18 @@
 import instance from './instance'
-export const putEditPost = async (slug, article) => {
+export const putEditPost = async (slugData, { rejectWithValue }) => {
   try {
+    const { slug } = slugData
     const token = localStorage.getItem('token')
     const headers = {
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     }
-    const res = await instance.put(`articles/${slug}`, { article }, { headers })
+    const res = await instance.put(`articles/${slug}`, slugData.validData, { headers })
     return res.data
   } catch (error) {
-    return error.message
-    // throw new Error('ошибка обработки данных')
+    return rejectWithValue('Статья не обновлена')
   }
 }
-// import axios from 'axios'
-// export const putEditPost = async (slug, article) => {
-//   const token = localStorage.getItem('token')
-//   const headers = { 'Content-Type': 'application/json', Authorization: `Token ${token}` }
-
-//   try {
-//     const response = await axios({
-//       method: 'put',
-//       url: `https://blog.kata.academy/api/articles/${slug}`,
-//       data: article,
-//       headers: headers,
-//     })
-
-//     return response.data
-//   } catch (error) {
-//     return error.message
-//   }
-// }
 
 // export const putEditPost = async (slug, article) => {
 //   const token = localStorage.getItem('token')

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form'
 import { postLogUser } from '../../../store/Slice/userSlice'
 import classes from './ModalLogin.module.scss'
 
-const ModalLogin = ({ children }) => {
+const ModalLogin = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

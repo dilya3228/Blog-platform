@@ -1,47 +1,47 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
+import { useForm, useFieldArray } from 'react-hook-form'
 import { putEdit } from '../../../store/Slice/getPostsSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { Button } from 'antd'
 import classes from './ModalEditPost.module.scss'
 
 const ModalEditPost = () => {
   const dispatch = useDispatch()
   const location = useLocation()
   const navigate = useNavigate()
-  const { title, description, tagList, body, key } = location.state
-  const { isEditPost } = useSelector((state) => state.posts)
 
-  const [unputs, setInputs] = useState([tagList])
-
-  const handelAdd = () => {
-    setInputs([...unputs, ''])
-  }
-
-  const handelDel = (index) => {
-    const list = [...unputs]
-    list.splice(index, 1)
-    setInputs(list)
-  }
-
-  const handleChange = (e, index) => {
-    const { value } = e.target
-    const list = [...unputs]
-    list[index] = value
-    setInputs(list)
-  }
+  const {
+    isEditPost,
+    posts: { article },
+  } = useSelector((state) => state.posts)
+  const { title, description, tagList, body, slug } = article
+  // const { title, description, tagList, body, key } = location.state
 
   const {
     register,
-    watch,
-    formState: { errors, isValid },
+    formState: { errors },
     handleSubmit,
+    control,
+    getValues,
     reset,
   } = useForm({
-    mode: 'onBlur',
+    mode: 'onChange',
+    defaultValues: {
+      title: title || '',
+      description: description || '',
+      body: body || '',
+      tagList: tagList || [{ name: '' }],
+    },
   })
-  const onSubmit = (data) => {
-    const stateEditPost = {
+
+  const { fields, append, remove } = useFieldArray({
+    name: 'tagList',
+    control,
+  })
+
+  const onSubmit = handleSubmit((data) => {
+    const validData = {
       article: {
         title: data.title,
         description: data.description,
@@ -49,9 +49,13 @@ const ModalEditPost = () => {
         tagList: data.tagList.map((tag) => tag.name),
       },
     }
-    dispatch(putEdit(key, stateEditPost))
+    const slugData = {
+      validData,
+      slug,
+    }
+    dispatch(putEdit(slugData))
     // reset()
-  }
+  })
 
   useEffect(() => {
     if (isEditPost) {
@@ -62,80 +66,81 @@ const ModalEditPost = () => {
 
   return (
     <div className={classes.title}>
-      <div className={classes.createTitle}>
-        <h2 className={classes.titleh2}>Edit article</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <span className={classes.labelTitle}>title</span>
-          <label htmlFor="Title" className={classes.label}>
-            <input
-              defaultValue={title}
-              id="Title"
-              className={classes.input}
-              {...register('title', {
-                required: false,
-                minLength: { value: 3, message: 'Минимум 3 символов' },
-                maxLength: { value: 50, message: 'Максимум 50 символов' },
-              })}
-            />
-          </label>
-          <span className={classes.labelTitle}>description</span>
-          <label htmlFor="Short description" className={classes.label}>
-            <input
-              id="Short description"
-              defaultValue={description}
-              {...register('description', {
-                required: false,
-                minLength: { value: 3, message: 'Минимум 3 символов' },
-                maxLength: { value: 80, message: 'Максимум 80 символов' },
-              })}
-              className={classes.input}
-            />
-          </label>
-          <span className={classes.labelTitle}>body</span>
-          <input
-            id="Text"
-            defaultValue={body}
-            {...register('body', {
-              required: false,
-              minLength: { value: 3, message: 'Минимум 3 символов' },
-              maxLength: { value: 1000, message: 'Максимум 50 символов' },
-            })}
-            type="text"
-            className={classes.inputText}
-          />
-          <span className={classes.labelTitleTag}>Tags</span>
-          <label htmlFor="Tags" className={classes.wrapTag}>
-            {unputs.map((singlInput, index) => (
-              <div key={index}>
+      <form onSubmit={onSubmit}>
+        <h2 className={classes.titleh2}>Edit post</h2>
+        <span className={classes.label}>Title</span>
+        <input
+          type="text"
+          placeholder="Title"
+          {...register('title', {
+            required: 'Поле обязательно к заполнению',
+          })}
+        />
+        {errors?.title && <span className={classes.error}>{errors?.title?.message || ''}</span>}
+        <span className={classes.label}>Short description</span>
+        <input
+          type="text"
+          placeholder="Description"
+          {...register('description', {
+            required: 'Поле обязательно к заполнению',
+          })}
+        />
+        {errors?.description && <span className={classes.error}>{errors?.description?.message || ''}</span>}
+        <span className={classes.label}>Text</span>
+        <textarea
+          placeholder="Text"
+          className={classes.area}
+          {...register('body', {
+            required: 'Поле обязательно к заполнению',
+          })}
+        />
+        {errors?.body && <span className={classes.error}>{errors?.body?.message || ''}</span>}
+        <span className={classes.label}>Tags</span>
+        <div className={classes.containerTag}>
+          {fields.map((field, index) => (
+            <div style={{ display: 'inherit', height: '35px' }} key={field.id}>
+              <div style={{ display: 'flex', flexDirection: 'column', width: '320px' }}>
                 <input
-                  name="service"
-                  id="Tag"
                   type="text"
-                  defaultValue={singlInput}
-                  // value={singlInput}
-                  className={classes.inputTag}
                   placeholder="Tag"
-                  onChange={(e) => handleChange(e, index)}
+                  className={classes.tag}
+                  {...register(`tagList.${index}.name`, {
+                    required: 'Тег не должен быть пустой, заполните или удалите',
+                    pattern: {
+                      value: /^[a-zA-Z0-9]+$/,
+                      message: 'Вы можете использовать только английские буквы и цифры без пробелов и других символов',
+                    },
+                    validate: (tagInputValue) =>
+                      !getValues()
+                        .tagList.map(({ name }) => name)
+                        .filter((_, currentChangingTagIndex) => index !== currentChangingTagIndex)
+                        .includes(tagInputValue) || 'Теги должны быть уникальные!',
+                  })}
                 />
-                {unputs.length > 1 && (
-                  <button onClick={() => handelDel(index)} className={classes.wrapperBtnDel}>
-                    Delete
-                  </button>
-                )}
-
-                {unputs.length - 1 === index && unputs.length < 4 && (
-                  <button onClick={handelAdd} className={classes.wrapperBtnAdd}>
-                    Add tag
-                  </button>
-                )}
+                {errors?.tagList?.[index] && <span className={classes.error}>{errors?.tagList?.[index]?.name?.message?.toString()}</span>}
               </div>
-            ))}
-          </label>
-          <button type="submit" className={classes.sendBtn}>
-            Send
-          </button>
-        </form>
-      </div>
+              <Button type="primary" danger ghost className={classes.delete} style={{ marginRight: '8px' }} onClick={() => remove(index)}>
+                Delete
+              </Button>
+            </div>
+          ))}
+          <Button
+            type="primary"
+            ghost
+            className={classes.add}
+            onClick={() => {
+              append({
+                name: '',
+              })
+            }}
+          >
+            Add tag
+          </Button>
+        </div>
+        <button className={classes.btn} type="submit">
+          Send
+        </button>
+      </form>
     </div>
   )
 }

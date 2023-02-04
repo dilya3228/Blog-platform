@@ -10,17 +10,26 @@ import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
+import { v4 as uuidv4 } from 'uuid'
 import classes from './ModalFullPost.module.scss'
 
-const ModalFullPost = (props) => {
+const ModalFullPost = () => {
   const dispatch = useDispatch()
   const { slug } = useParams()
+
   const location = useLocation()
   const navigate = useNavigate()
   const { title, author, createdAt, description, favoritesCount, tagList, body, key, favorited } = location.state
+
+  // const {
+  //   posts: { article },
+  // } = useSelector((state) => state.posts)
+  // console.log(article.title)
+  // const { title, author, createdAt, description, favoritesCount, tagList, body, favorited, key } = article
   const { username } = useSelector((state) => state.user.user)
   const { isIn, isReg } = useSelector((state) => state.user)
   const { error, status } = useSelector((state) => state.posts)
+
   const [like, setLike] = useState(favorited)
   const [count, setCount] = useState(favoritesCount)
 
@@ -41,21 +50,17 @@ const ModalFullPost = (props) => {
     message.error('Отмена удаления поста')
   }
 
-  // useEffect(() => {
-  //   dispatch(fetchSlug(key))
-  //   if (favorited || !favorited) {
-  //     setLike(favorited)
-  //   }
-  //   setCount(favoritesCount)
-  // }, [slug, favorited, favoritesCount, dispatch])
   useEffect(() => {
+    if (slug) {
+      dispatch(fetchSlug(slug))
+    }
+
     if (favorited || !favorited) {
       setLike(favorited)
     }
     setCount(favoritesCount)
   }, [slug, favorited, favoritesCount])
 
-  // console.log(.trim().slice(0, 1700))
   return (
     <div className={classes.item}>
       {status === 'loading' && (
@@ -91,13 +96,13 @@ const ModalFullPost = (props) => {
                 <div className={classes.likeCounter}>{count}</div>
               </div>
               <div className={classes.info}>
-                {tagList &&
-                  tagList.map((el) => (
-                    <div className={classes.tag} key={el.id}>
-                      {/* {el.substr(0, 10)} */}
-                      {el?.length > 6 ? `${el.slice(0, 6)}` : el}
-                    </div>
-                  ))}
+                {tagList.map((tag) => {
+                  return (
+                    <span key={uuidv4()} className={classes.tag}>
+                      {tag?.slice(0, 6)}
+                    </span>
+                  )
+                })}
               </div>
               <div className={classes.text}>{hiddenText}</div>
               <div className={classes.fullInfo}>
@@ -125,21 +130,7 @@ const ModalFullPost = (props) => {
                       </button>
                     </Popconfirm>
 
-                    <Link
-                      to={`/edit`}
-                      className={classes.Ebtn}
-                      state={{
-                        key: slug,
-                        author: author,
-                        title: title,
-                        description: description,
-                        createdAt: createdAt,
-                        favoritesCount: favoritesCount,
-                        tagList: tagList,
-                        body: body,
-                      }}
-                      onClick={() => dispatch(putEdittt())}
-                    >
+                    <Link to={`/articles/${slug}/edit`} className={classes.Ebtn} onClick={() => dispatch(putEdittt())}>
                       Edit
                     </Link>
                   </>
