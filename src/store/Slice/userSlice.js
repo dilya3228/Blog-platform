@@ -45,11 +45,14 @@ const userSlice = createSlice({
     editProfile(state) {
       state.isEdit = false
     },
+    errorNull(state) {
+      state.error = ''
+    },
   },
   extraReducers: {
     [postSignUp.pending]: (state, action) => {
       state.status = 'pending'
-      state.error = null
+      state.error = ''
       state.isReg = false
       state.isIn = false
     },
@@ -96,6 +99,6 @@ const userSlice = createSlice({
   },
 })
 
-export const { logout, editProfile } = userSlice.actions
+export const { logout, editProfile, errorNull } = userSlice.actions
 
 export default userSlice.reducer

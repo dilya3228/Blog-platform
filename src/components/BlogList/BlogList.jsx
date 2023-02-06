@@ -45,7 +45,7 @@ const BlogList = () => {
         ))}
       </ul>
       <div className={classes.paginate}>
-        <Pagination current={actuallyPage} defaultPageSize={5} onChange={(e) => handlePaginate(e)} defaultCurrent={1} total={articlesCount} />
+        <Pagination defaultPageSize={5} onChange={(e) => handlePaginate(e)} showSizeChanger={false} defaultCurrent={1} total={articlesCount} />
       </div>
     </>
   )

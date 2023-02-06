@@ -83,6 +83,9 @@
   height: 46px;
   border-radius: 23px;
 }
+.avatar:before {
+  content: url(../../img/Rectangle1.png);
+}
 
 .createArt {
   margin-right: 26px;

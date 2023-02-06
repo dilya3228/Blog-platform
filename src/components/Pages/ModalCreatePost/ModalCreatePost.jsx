@@ -73,12 +73,10 @@ const ModalCreatePost = () => {
               placeholder="Title"
               {...register('title', {
                 required: 'Поле обязательно для заполнения',
-                minLength: { value: 3, message: 'Минимум 3 символов' },
-                maxLength: { value: 50, message: 'Максимум 50 символов' },
               })}
             />
           </label>
-          <div className={classes.error}>{errors?.title && <p>{errors?.title?.message || 'Error!'}</p>}</div>
+          <div className={classes.error}>{errors?.title && <p>{errors?.title?.message || ''}</p>}</div>
           <span className={classes.labelTitle}>Short description</span>
           <label htmlFor="description" className={classes.label}>
             <input
@@ -88,12 +86,10 @@ const ModalCreatePost = () => {
               placeholder="Short description"
               {...register('description', {
                 required: 'Поле обязательно для заполнения',
-                minLength: { value: 3, message: 'Минимум 3 символов' },
-                maxLength: { value: 80, message: 'Максимум 80 символов' },
               })}
             />
           </label>
-          <div className={classes.error}>{errors?.description && <p>{errors?.description?.message || 'Error!'}</p>}</div>
+          <div className={classes.error}>{errors?.description && <p>{errors?.description?.message || ''}</p>}</div>
           <span className={classes.labelTitle}>Text</span>
           <label htmlFor="body" className={classes.label}>
             <input
@@ -103,12 +99,10 @@ const ModalCreatePost = () => {
               placeholder="Text"
               {...register('body', {
                 required: 'Поле обязательно для заполнения',
-                minLength: { value: 3, message: 'Минимум 3 символов' },
-                maxLength: { value: 1000, message: 'Максимум 50 символов' },
               })}
             />
           </label>
-          <div className={classes.error}>{errors?.body && <p>{errors?.body?.message || 'Error!'}</p>}</div>
+          <div className={classes.error}>{errors?.body && <p>{errors?.body?.message || ''}</p>}</div>
           <span className={classes.labelTitleTag}>Tag</span>
           <label htmlFor="Tag" className={classes.wrapTag}>
             <>

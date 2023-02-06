@@ -24,7 +24,7 @@ const ModalFullPost = () => {
   // const {
   //   posts: { article },
   // } = useSelector((state) => state.posts)
-  // console.log(article.title)
+
   // const { title, author, createdAt, description, favoritesCount, tagList, body, favorited, key } = article
   const { username } = useSelector((state) => state.user.user)
   const { isIn, isReg } = useSelector((state) => state.user)
@@ -54,7 +54,6 @@ const ModalFullPost = () => {
     if (slug) {
       dispatch(fetchSlug(slug))
     }
-
     if (favorited || !favorited) {
       setLike(favorited)
     }
@@ -100,7 +99,7 @@ const ModalFullPost = () => {
                   {tagList.map((tag) => {
                     return (
                       <span key={uuidv4()} className={classes.tag}>
-                        {tag?.slice(0, 6)}
+                        {tag?.length > 8 ? tag.slice(0, 8) + '...' : tag}
                       </span>
                     )
                   })}

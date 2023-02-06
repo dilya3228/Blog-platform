@@ -75,7 +75,7 @@ const BlogItem = ({ article }) => {
           <div className={classes.info}>
             {tagList?.map((el) => (
               <div className={classes.tag} key={el}>
-                {el}
+                {el?.length > 8 ? el.slice(0, 8) + '...' : el}
               </div>
             ))}
           </div>

@@ -48,11 +48,10 @@
   }
 
   .info {
-    display: grid;
-    grid-template-columns: repeat(3, 47px);
-    grid-column-gap: 10px;
+    display: flex;
 
     .tag {
+      margin-right: 7px;
       padding: 2px 4px;
       border: 1px solid rgba(0, 0, 0, 0.5);
       border-radius: 2px;

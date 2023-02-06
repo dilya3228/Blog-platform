@@ -75,6 +75,17 @@ input {
   margin-bottom: 45px;
 }
 
+.divOne {
+  display: inherit;
+  height: 35px;
+}
+
+.divTwo {
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+}
+
 .delete {
   border-radius: 4px;
   height: 35px;

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useForm, useFieldArray } from 'react-hook-form'
-import { putEdit } from '../../../store/Slice/getPostsSlice'
+import { putEdit, createPost } from '../../../store/Slice/getPostsSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button } from 'antd'
 import classes from './ModalEditPost.module.scss'
@@ -13,6 +13,7 @@ const ModalEditPost = () => {
 
   const {
     isEditPost,
+    isCreatePost,
     posts: { article },
   } = useSelector((state) => state.posts)
   const { title, description, tagList, body, slug } = article
@@ -53,7 +54,12 @@ const ModalEditPost = () => {
       validData,
       slug,
     }
-    dispatch(putEdit(slugData))
+    if (slug) {
+      dispatch(putEdit(slugData))
+    } else {
+      dispatch(createPost(validData))
+    }
+
     // reset()
   })
 
@@ -61,8 +67,11 @@ const ModalEditPost = () => {
     if (isEditPost) {
       navigate('/', { replace: true })
     }
+    if (isCreatePost) {
+      navigate('/', { replace: true })
+    }
     // reset()
-  }, [isEditPost])
+  }, [isEditPost, isCreatePost])
 
   return (
     <div className={classes.title}>
@@ -98,8 +107,8 @@ const ModalEditPost = () => {
         <span className={classes.label}>Tags</span>
         <div className={classes.containerTag}>
           {fields.map((field, index) => (
-            <div style={{ display: 'inherit', height: '35px' }} key={field.id}>
-              <div style={{ display: 'flex', flexDirection: 'column', width: '320px' }}>
+            <div className={classes.divOne} key={field.id}>
+              <div className={classes.divTwo} style={{ display: 'flex', flexDirection: 'column', width: '320px' }}>
                 <input
                   type="text"
                   placeholder="Tag"

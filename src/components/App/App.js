@@ -3,33 +3,48 @@ import { Routes, Route } from 'react-router-dom'
 import Header from '../Header/Header'
 import BlogList from '../BlogList/BlogList'
 import classes from './App.module.scss'
-import ModalFullPost from '../Modal/ModalFullPost/ModalFullPost'
-import ModalCreateAccount from '../Modal/ModalCreateAccount/ModalCreateAccount'
-import ModalEditProfile from '../Modal/ModalEditProfile/ModalEditProfile'
-import ModalLogin from '../Modal/ModalLogin/ModalLogin'
-import ModalCreatePost from '../Modal/ModalCreatePost/ModalCreatePost'
-import ModalEditPost from '../Modal/ModalEditPost/ModalEditPost'
+import ModalFullPost from '../Pages/ModalFullPost/ModalFullPost'
+import ModalCreateAccount from '../Pages/ModalCreateAccount/ModalCreateAccount'
+import ModalEditProfile from '../Pages/ModalEditProfile/ModalEditProfile'
+import ModalLogin from '../Pages/ModalLogin/ModalLogin'
+import ModalCreatePost from '../Pages/ModalCreatePost/ModalCreatePost'
+import ModalEditPost from '../Pages/ModalEditPost/ModalEditPost'
 import PrivateRoute from './PrivatRoute'
 
 const App = () => {
+  const path = {
+    articles: 'articles',
+    signUp: 'sign-up',
+    signIn: 'sign-in',
+    profile: 'profile',
+    newArticle: 'new-article',
+  }
   return (
     <div className={classes.container}>
       <Routes>
         <Route path="/" element={<Header />}>
           <Route index element={<BlogList />} />
-          <Route path="articles/:slug" element={<ModalFullPost />} />
-          <Route path="sign-up" element={<ModalCreateAccount />} />
-          <Route path="sign-in" element={<ModalLogin />} />
-          <Route path="profile" element={<ModalEditProfile />} />
+          <Route path={`${path.articles}/:slug`} element={<ModalFullPost />} />
+          <Route path={`${path.signUp}`} element={<ModalCreateAccount />} />
+          <Route path={`${path.signIn}`} element={<ModalLogin />} />
           <Route
-            path="new-article"
+            path={`${path.profile}`}
+            element={
+              <PrivateRoute>
+                <ModalEditProfile />
+              </PrivateRoute>
+            }
+          />
+          {/* <Route path="profile" element={<ModalEditProfile />} /> */}
+          <Route
+            path={`${path.newArticle}`}
             element={
               <PrivateRoute>
                 <ModalCreatePost />
               </PrivateRoute>
             }
           />
-          <Route path="articles/:slug/edit" element={<ModalEditPost />} />
+          <Route path={`${path.articles}/:slug/edit`} element={<ModalEditPost />} />
         </Route>
       </Routes>
     </div>
