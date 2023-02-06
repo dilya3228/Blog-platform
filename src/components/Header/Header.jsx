@@ -8,7 +8,7 @@ import avatar from '../../img/Rectangle1.png'
 
 const Header = () => {
   const dispatch = useDispatch()
-  const { isIn, isReg } = useSelector((state) => state.user)
+  const { isIn, isReg, error } = useSelector((state) => state.user)
   const { username, image } = useSelector((state) => state.user.user)
 
   return (
@@ -26,7 +26,7 @@ const Header = () => {
               <div className={classes.userContainer}>
                 <Link to="/profile" className={classes.userProf} onClick={() => dispatch(editProfile())}>
                   <span className={classes.name}>{username}</span>
-                  <img className={classes.avatar} src={image || username.avatar} />
+                  <img className={classes.avatar} src={image.length !== '' ? image : avatar} />
                 </Link>
               </div>
               <Link to="/" className={classes.logOut} onClick={() => dispatch(logout())}>
