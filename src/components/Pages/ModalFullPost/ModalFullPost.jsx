@@ -4,13 +4,14 @@ import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { fetchSlug, delPost, putEdittt, likeArticle } from '../../../store/Slice/getPostsSlice'
 import ReactMarkdown from 'react-markdown'
-import { message, Popconfirm, Button } from 'antd'
+import { message, Popconfirm, Button, Avatar } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import Alert from '@mui/material/Alert'
 import Stack from '@mui/material/Stack'
 import { v4 as uuidv4 } from 'uuid'
+import avatar from '../../../img/Rectangle1.png'
 import classes from './ModalFullPost.module.scss'
 
 const ModalFullPost = () => {
@@ -32,6 +33,7 @@ const ModalFullPost = () => {
 
   const [like, setLike] = useState(favorited)
   const [count, setCount] = useState(favoritesCount)
+  const userAvatar = author?.image ? author.image : avatar
 
   const hiddenText = description && description.length > 100 ? description.slice(0, description.indexOf('', 70)) + '...' : description
   const hiddenTitle = title && title.length > 25 ? title.slice(0, title.indexOf('', 40)) + '...' : title
@@ -137,7 +139,8 @@ const ModalFullPost = () => {
                   )}
                 </div>
               </div>
-              <img className={classes.avatar} src={author.image}></img>
+              {/* <img className={classes.avatar} src={author.image}></img> */}
+              <Avatar src={userAvatar} size={46} />
             </div>
           </>
         ) : (

@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom'
 import { likeArticle } from '../../store/Slice/getPostsSlice'
 import { format } from 'date-fns'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
-import { Button } from 'antd'
+import { Button, Avatar } from 'antd'
+import avatar from '../../img/Rectangle1.png'
 import classes from './BlogItem.module.scss'
 
 const BlogItem = ({ article }) => {
@@ -17,6 +18,7 @@ const BlogItem = ({ article }) => {
   const { isIn, isReg } = useSelector((state) => state.user)
   const [like, setLike] = useState(favorited)
   const [count, setCount] = useState(favoritesCount)
+  const userAvatar = author?.image ? author.image : avatar
 
   const formatData = (data) => {
     if (!data) return null
@@ -87,7 +89,8 @@ const BlogItem = ({ article }) => {
           <div className={classes.name}>{author.username.slice(0, 8)}</div>
           <div className={classes.date}>{formatData(createdAt)}</div>
         </div>
-        <img className={classes.avatar} src={author.image} />
+        {/* <img className={classes.avatar} src={author.image} /> */}
+        <Avatar src={userAvatar} size={46} />
       </div>
     </li>
   )
