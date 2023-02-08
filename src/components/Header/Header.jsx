@@ -26,7 +26,7 @@ const Header = () => {
               <div className={classes.userContainer}>
                 <Link to="/profile" className={classes.userProf} onClick={() => dispatch(editProfile())}>
                   <span className={classes.name}>{username}</span>
-                  <img className={classes.avatar} src={image.length !== '' ? image : avatar} />
+                  <img className={classes.avatar} src={!image ? avatar : image} />
                 </Link>
               </div>
               <Link to="/" className={classes.logOut} onClick={() => dispatch(logout())}>
