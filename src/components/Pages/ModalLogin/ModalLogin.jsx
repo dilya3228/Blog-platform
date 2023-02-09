@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
 import { postLogUser, errorNull } from '../../../store/Slice/userSlice'
+import { path } from '../../../utils/path'
 import classes from './ModalLogin.module.scss'
 
 const ModalLogin = () => {
@@ -62,7 +63,6 @@ const ModalLogin = () => {
             })}
           />
           {errors?.email && <p className={classes.error}>{errors?.email?.message || 'Некорректный Email'}</p>}
-          {/* <div className={classes.error}>{errors?.email && <p>{errors?.email?.message || 'Введите корpектный Email!'}</p>}</div> */}
           <span className={classes.labelTitle}>Password</span>
           <input
             type="password"
@@ -76,13 +76,12 @@ const ModalLogin = () => {
           />
           {errors?.password && <p className={classes.error}>{errors?.password?.message || 'Password должен быть от 6 до 40 символов'}</p>}
           {status === 'rejected' ? <div className={classes.error}>{error}</div> : ''}
-          {/* <div className={classes.error}>{errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}</div> */}
           <button type="submit" className={classes.loginBtn}>
             Login
           </button>
         </form>
         <span className={classes.already}>
-          Already have an account? <Link to="/sign-up">Sign Up</Link>.
+          Already have an account? <Link to={`/${path.signUp}`}>Sign Up</Link>.
         </span>
       </div>
     </div>

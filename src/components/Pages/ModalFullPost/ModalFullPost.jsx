@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { fetchSlug, delPost, putEdittt, likeArticle } from '../../../store/Slice/getPostsSlice'
+import { path } from '../../../utils/path'
 import ReactMarkdown from 'react-markdown'
 import { message, Popconfirm, Button, Avatar } from 'antd'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
@@ -17,16 +18,9 @@ import classes from './ModalFullPost.module.scss'
 const ModalFullPost = () => {
   const dispatch = useDispatch()
   const { slug } = useParams()
-
   const location = useLocation()
   const navigate = useNavigate()
   const { title, author, createdAt, description, favoritesCount, tagList, body, key, favorited } = location.state
-
-  // const {
-  //   posts: { article },
-  // } = useSelector((state) => state.posts)
-
-  // const { title, author, createdAt, description, favoritesCount, tagList, body, favorited, key } = article
   const { username } = useSelector((state) => state.user.user)
   const { isIn, isReg } = useSelector((state) => state.user)
   const { error, status } = useSelector((state) => state.posts)
@@ -131,15 +125,13 @@ const ModalFullPost = () => {
                           Delete
                         </button>
                       </Popconfirm>
-
-                      <Link to={`/articles/${slug}/edit`} className={classes.Ebtn} onClick={() => dispatch(putEdittt())}>
+                      <Link to={`/${path.articles}/${slug}/edit`} className={classes.Ebtn} onClick={() => dispatch(putEdittt())}>
                         Edit
                       </Link>
                     </>
                   )}
                 </div>
               </div>
-              {/* <img className={classes.avatar} src={author.image}></img> */}
               <Avatar src={userAvatar} size={46} />
             </div>
           </>

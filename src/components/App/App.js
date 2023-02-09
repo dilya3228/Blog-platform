@@ -10,15 +10,9 @@ import ModalLogin from '../Pages/ModalLogin/ModalLogin'
 import ModalCreatePost from '../Pages/ModalCreatePost/ModalCreatePost'
 import ModalEditPost from '../Pages/ModalEditPost/ModalEditPost'
 import PrivateRoute from './PrivatRoute'
+import { path } from '../../utils/path'
 
 const App = () => {
-  const path = {
-    articles: 'articles',
-    signUp: 'sign-up',
-    signIn: 'sign-in',
-    profile: 'profile',
-    newArticle: 'new-article',
-  }
   return (
     <div className={classes.container}>
       <Routes>
@@ -35,7 +29,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          {/* <Route path="profile" element={<ModalEditProfile />} /> */}
           <Route
             path={`${path.newArticle}`}
             element={

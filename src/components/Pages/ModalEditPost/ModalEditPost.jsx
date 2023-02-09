@@ -17,7 +17,6 @@ const ModalEditPost = () => {
     posts: { article },
   } = useSelector((state) => state.posts)
   const { title, description, tagList, body, slug } = article
-  // const { title, description, tagList, body, key } = location.state
 
   const {
     register,
@@ -59,8 +58,6 @@ const ModalEditPost = () => {
     } else {
       dispatch(createPost(validData))
     }
-
-    // reset()
   })
 
   useEffect(() => {
@@ -70,7 +67,6 @@ const ModalEditPost = () => {
     if (isCreatePost) {
       navigate('/', { replace: true })
     }
-    // reset()
   }, [isEditPost, isCreatePost])
 
   return (

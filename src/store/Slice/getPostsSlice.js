@@ -103,13 +103,11 @@ const getPostSlice = createSlice({
     [fetchSlug.pending]: (state) => {
       state.status = 'loading'
       state.error = null
-      // state.isEditPost = false
     },
     [fetchSlug.fulfilled]: (state, action) => {
       state.status = 'resolve'
       state.posts = action.payload
       state.article = action.payload
-      // state.isEditPost = true
     },
     [fetchSlug.rejected]: (state, action) => {
       state.status = 'rejected'
@@ -122,7 +120,6 @@ const getPostSlice = createSlice({
     },
     [createPost.fulfilled]: (state, action) => {
       state.status = 'resolve'
-      // state.createPost = action.payload
       state.isCreatePost = true
     },
     [createPost.rejected]: (state, action) => {
@@ -148,12 +145,6 @@ const getPostSlice = createSlice({
     [putEdit.fulfilled]: (state, action) => {
       state.status = 'resolve'
       state.isEditPost = true
-      // state.posts.article = action.payload
-      // state.posts.articles = payload
-      // state.posts.articles.map((article) => {
-      //   return (article = payload)
-      //   // return article
-      // })
     },
     [putEdit.rejected]: (state, action) => {
       state.status = 'rejected'

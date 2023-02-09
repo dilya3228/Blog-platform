@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { likeArticle } from '../../store/Slice/getPostsSlice'
+import { path } from '../../utils/path'
 import { format } from 'date-fns'
+import { v4 as uuidv4 } from 'uuid'
 import { HeartOutlined, HeartFilled } from '@ant-design/icons'
 import { Button, Avatar } from 'antd'
 import avatar from '../../img/Rectangle1.png'
@@ -41,7 +43,7 @@ const BlogItem = ({ article }) => {
           <div className={classes.header}>
             <div>
               <Link
-                to={`/articles/${slug}`}
+                to={`/${path.articles}/${slug}`}
                 state={{
                   key: slug,
                   author: author,
@@ -75,11 +77,13 @@ const BlogItem = ({ article }) => {
             <div className={classes.likeCounter}>{count}</div>
           </div>
           <div className={classes.info}>
-            {tagList?.map((el) => (
-              <div className={classes.tag} key={el}>
-                {el?.length > 8 ? el.slice(0, 8) + '...' : el}
-              </div>
-            ))}
+            {tagList.map((tag) => {
+              return (
+                <span key={uuidv4()} className={classes.tag}>
+                  {tag?.length > 8 ? tag.slice(0, 8) + '...' : tag}
+                </span>
+              )
+            })}
           </div>
           <div className={classes.text}>{description && description.length > 70 ? description.slice(0, description.indexOf('', 70)) + '...' : description}</div>
         </div>
@@ -89,7 +93,6 @@ const BlogItem = ({ article }) => {
           <div className={classes.name}>{author.username.slice(0, 8)}</div>
           <div className={classes.date}>{formatData(createdAt)}</div>
         </div>
-        {/* <img className={classes.avatar} src={author.image} /> */}
         <Avatar src={userAvatar} size={46} />
       </div>
     </li>

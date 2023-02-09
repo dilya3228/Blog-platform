@@ -1,4 +1,13 @@
 import instance from './instance'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+export const postSignUp = createAsyncThunk('user/fetchRegistrationUser', async (userRegData, { rejectWithValue }) => {
+  const response = await instance.post('users/', userRegData)
+  if (response.status === 422) {
+    return rejectWithValue('A user with the same username or email address exists')
+  }
+  !localStorage.getItem('token') && localStorage.setItem('token', response.data.user.token)
+  return response.data
+})
 // import { createAsyncThunk } from '@reduxjs/toolkit'
 // export const postSignUp = createAsyncThunk('user/fetchRegistrationUser', async (userRegData, { rejectWithValue }) => {
 //   try {
@@ -25,13 +34,3 @@ import instance from './instance'
 //     throw rejectWithValue(error.message)
 //   }
 // })
-
-import { createAsyncThunk } from '@reduxjs/toolkit'
-export const postSignUp = createAsyncThunk('user/fetchRegistrationUser', async (userRegData, { rejectWithValue }) => {
-  const response = await instance.post('users/', userRegData)
-  if (response.status === 422) {
-    return rejectWithValue('A user with the same username or email address exists')
-  }
-  !localStorage.getItem('token') && localStorage.setItem('token', response.data.user.token)
-  return response.data
-})

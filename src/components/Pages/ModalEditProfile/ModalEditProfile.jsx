@@ -63,7 +63,6 @@ const ModalEditProfile = () => {
             })}
           />
           {errors?.username && <p className={classes.error}>{errors?.username?.message || 'Username должен быть от 3 до 20 символов'}</p>}
-          {/* <div className={classes.error}>{errors?.username && <p>{errors?.username?.message || 'Error!'}</p>}</div> */}
           <span className={classes.labelTitle}>Email address</span>
           <input
             disabled
@@ -78,7 +77,6 @@ const ModalEditProfile = () => {
             placeholder="Email address"
           />
           {errors?.email && <p className={classes.error}>{errors?.email?.message || 'Username должен быть от 3 до 20 символов'}</p>}
-          {/* <div className={classes.error}>{errors?.email && <p>{errors?.email?.message || 'Введите корpектный Email!'}</p>}</div> */}
           <span className={classes.labelTitle}>New password</span>
           <input
             id="password"
@@ -92,7 +90,6 @@ const ModalEditProfile = () => {
             })}
           />
           {errors?.password && <p className={classes.error}>{errors?.password?.message || 'Password должен быть от 6 до 40 символов'}</p>}
-          {/* <div className={classes.error}>{errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}</div> */}
           <span className={classes.labelTitle}>Avatar image (url)</span>
           <input
             id="image"

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { postSignUp } from '../../../service/postSignUp'
+import { path } from '../../../utils/path'
 import classes from './ModalCreateAccount.module.scss'
 const ModalCreateAccount = () => {
   const dispatch = useDispatch()
@@ -29,8 +30,6 @@ const ModalCreateAccount = () => {
     }
     dispatch(postSignUp(userRegData))
   }
-
-  const password = watch('password')
 
   useEffect(() => {
     if (isReg) {
@@ -122,21 +121,15 @@ const ModalCreateAccount = () => {
               I agree to the processing of my personal
               <br /> information
             </label>
-            {/* {errors?.acceptTerms && <p className={classes.error}>{errors?.acceptTerms?.message || ''}</p>} */}
             <p className={classes.error}>{error ?? ''}</p>
             {errors?.chekk && <span className={classes.error}>{errors?.chekk?.message || ''}</span>}
-            {/* <span className={classes.error}>{error ?? ''}</span> */}
-            {/* <div className={classes.error}>{errors?.chekk && <p>{errors?.chekk?.message || 'Error!'}</p>}</div> */}
           </div>
-          {/* {status === 'rejected' ? <div className={classes.error}>{error}</div> : ''} */}
-          {/* <div className={classes.error}>{error && <p>{error.message || 'A user with the same username or email address exists!'}</p>}</div> */}
           <button type="submit" className={classes.createBtn}>
             Create
           </button>
         </form>
-
         <span className={classes.already}>
-          Already have an account? <Link to="/sign-in">Sign In</Link>.
+          Already have an account? <Link to={`/${path.signIn}`}>Sign In</Link>.
         </span>
       </div>
     </div>
